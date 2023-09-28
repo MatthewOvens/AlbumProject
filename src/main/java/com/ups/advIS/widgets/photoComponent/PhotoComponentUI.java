@@ -2,6 +2,7 @@ package com.ups.advIS.widgets.photoComponent;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.Iterator;
 
 public class PhotoComponentUI {
@@ -17,11 +18,36 @@ public class PhotoComponentUI {
     This can be as simple as a solid color, or some pattern such as graph paper.
     You'd create this effect by simply doing some drawing in your drawing method before rendering the image.
      */
-    public void paint(Graphics pen, PhotoComponent canvas) {
-        pen.setColor(Color.pink);
+    public void paint(Graphics g, PhotoComponent canvas, BufferedImage image) {
+        g.setColor(Color.RED);
         Rectangle bounds = canvas.getBounds();
-        pen.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
-        pen.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
+        g.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
+        g.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
+
+        int parentComponentWidth = canvas.getWidth();
+        int parentComponentHeight = canvas.getHeight();
+        int imageWidth = image.getHeight();
+        int imageHeight = image.getHeight();
+
+        //ChatCPT help code in order to scale in the right way the images inside the parent component
+        //prompt: "How can I maintain the image contained inside a parent component in Java Swing?"
+        // Calculate the scaling factors to fit the image inside the parent component
+        double scaleX = (double) parentComponentWidth / imageWidth;
+        double scaleY = (double) parentComponentHeight / imageHeight;
+
+        // Use the minimum scaling factor to maintain aspect ratio
+        double scale = Math.min(scaleX, scaleY);
+
+        // Calculate the dimensions of the scaled image
+        int newWidth = (int) (imageWidth * scale);
+        int newHeight = (int) (imageHeight * scale);
+
+        // Calculate the position to center the image within the parent component
+        int x = (parentComponentWidth - newWidth) / 2;
+        int y = (parentComponentHeight - newHeight) / 2;
+
+        g.drawImage(image, x, y, newWidth, newHeight, null);
+        //new JLabel(new ImageIcon(image));
     }
 
     public void paintBackground() {

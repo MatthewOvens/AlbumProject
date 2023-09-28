@@ -19,8 +19,7 @@ import javax.swing.text.StyledEditorKit;
 public class Album extends JFrame { //JFrame managed to visualize the windows elements
 
     JPanel statusPanel;
-    JPanel bodyPanel;
-    //JPanel bodyPanel;
+    JScrollPane bodyPanel;
     JPanel photoPanel;
     JScrollPane bodyPhotoContainer;
     public static JLabel statusBar;
@@ -36,10 +35,6 @@ public class Album extends JFrame { //JFrame managed to visualize the windows el
     public JToggleButton peopleButton;
     public JToggleButton placesButton;
     public JToggleButton schoolButton;
-
-    public int prova;
-
-    PhotoComponent photoComponent;
 
     /**
      * Constructor for the Album class, creates the main window.
@@ -163,11 +158,15 @@ public class Album extends JFrame { //JFrame managed to visualize the windows el
      */
     private void createBody() {
         //Set of a Grid layout in order to resize the PhotosComponents in the right way while resizing the frame
-        bodyPanel = new JPanel();
-        //photoPanel = new JPanel(new GridLayout(1,1,4,4));
-        //photoPanel = new JPanel(new GridLayout(1,1,4,4));
-        //bodyPanel.add(photoPanel);
-        bodyPanel.setBackground(Color.decode("#A6F5FF"));
+        bodyPanel = new JScrollPane();
+
+        //TODO make it dynamic
+        photoPanel = new JPanel(new GridLayout(2,2,4,4));
+        photoPanel.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+
+        //ViewportView cause JScrollPane has alreasy a JViewport added
+        bodyPanel.setViewportView(photoPanel);
+
         this.add(bodyPanel);
     }
 
@@ -178,10 +177,14 @@ public class Album extends JFrame { //JFrame managed to visualize the windows el
         List<Image> storedImages = retriveStoredImages();
 
         //Loop over the retrived images adding the whole thing.
+        PhotoComponent photoComponent = new PhotoComponent();
+        photoPanel.add(photoComponent);
 
-        //photoComponent = new PhotoComponent();
-        //photoPanel.add(photoComponent);
-        //bodyPanel.add(photoComponent);
+        PhotoComponent photoComponent2 = new PhotoComponent();
+        photoPanel.add(photoComponent2);
+
+        PhotoComponent photoComponent3 = new PhotoComponent();
+        photoPanel.add(photoComponent3);
 
     }
 

@@ -2,6 +2,7 @@ package com.ups.advIS.widgets.photoComponent;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 //The widget Controller, the main class
 
@@ -37,17 +38,20 @@ public class PhotoComponent extends JComponent {
 
         this.setPreferredSize(new Dimension(preferredSize, preferredSize));
 
-        model.addChangeListener(e -> repaint());
 
+        //setImage()
+        //setMuoseListeners double click and everyone else
         //With a default photo?
-        //model.setImage("./images/candy_shop.jpg");
+        model.setImage("C:/Users/forna/Desktop/EIT/UPS/Uni stuff/Advanced programming/AlbumProject/src/main/resources/images/candy_shop.jpg");
+        model.addChangeListener(e -> repaint());
 
         //model.addChangeListener(e -> repaint());  //Or other thing? For later to modify dinamically every object inizialized
     }
 
     //For later
     public PhotoComponent(Image image) {
-        print(image.getGraphics());
+        //Serve?
+        //paint(image.getGraphics());
     }
 
     public PhotoComponentModel getModel() {
@@ -68,6 +72,9 @@ public class PhotoComponent extends JComponent {
      */
     @Override
     protected void paintComponent(Graphics pen) {
+
+        BufferedImage image = model.getImage();
+
         if(isFlipped) {
 
             //background -> image
@@ -75,7 +82,7 @@ public class PhotoComponent extends JComponent {
         }
         else {
 
-            ui.paint(pen, this);
+            ui.paint(pen, this, image);
             //Background -> white surface -> annotation
             //ui.paint(pen, this);
         }

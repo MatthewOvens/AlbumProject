@@ -18,7 +18,7 @@ public class PhotoComponentModel {
     //List of actual images stored, with link, maybe position, size..
     //private List<Image> images = new ArrayList<>();
 
-    private Image image;
+    private BufferedImage image;
     private List<ChangeListener> listeners = new ArrayList<>();
     //Annotations points
     //Text annotations
@@ -42,7 +42,7 @@ public class PhotoComponentModel {
 
     }
 
-    public Image getImage() {
+    public BufferedImage getImage() {
         return image;
     }
 
@@ -64,6 +64,9 @@ public class PhotoComponentModel {
 
     public void addChangeListener(ChangeListener listener) {
         listeners.add(listener);
+
+        //Sembra entri solo all'inizio, è corretto?
+        System.out.println("Entrato in listener");
     }
 
     private void notifyChangeListeners() {

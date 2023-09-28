@@ -18,16 +18,19 @@ public class PhotoComponentUI {
     This can be as simple as a solid color, or some pattern such as graph paper.
     You'd create this effect by simply doing some drawing in your drawing method before rendering the image.
      */
-    public void paint(Graphics g, PhotoComponent canvas, BufferedImage image) {
-        g.setColor(Color.RED);
-        Rectangle bounds = canvas.getBounds();
-        g.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
-        g.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
+    public void paintPhoto(Graphics g, PhotoComponent canvas) {
+        //g.setColor(Color.RED);
+        //Rectangle bounds = canvas.getBounds();
+        //g.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
+        //g.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
+
+        //TODO eliminare duplicazione
+        paintBackground(g, canvas);
 
         int parentComponentWidth = canvas.getWidth();
         int parentComponentHeight = canvas.getHeight();
-        int imageWidth = image.getHeight();
-        int imageHeight = image.getHeight();
+        int imageWidth = canvas.getModel().getImage().getHeight();
+        int imageHeight = canvas.getModel().getImage().getHeight();
 
         //ChatCPT help code in order to scale in the right way the images inside the parent component
         //prompt: "How can I maintain the image contained inside a parent component in Java Swing?"
@@ -46,12 +49,63 @@ public class PhotoComponentUI {
         int x = (parentComponentWidth - newWidth) / 2;
         int y = (parentComponentHeight - newHeight) / 2;
 
-        g.drawImage(image, x, y, newWidth, newHeight, null);
+        g.drawImage(canvas.getModel().getImage(), x, y, newWidth, newHeight, null);
         //new JLabel(new ImageIcon(image));
     }
 
-    public void paintBackground() {
+    public void paintPhotoBack(Graphics g, PhotoComponent canvas) {
+        paintBackground(g, canvas);
 
+
+        //TODO eliminare duplicazione
+        int parentComponentWidth = canvas.getWidth();
+        int parentComponentHeight = canvas.getHeight();
+        int imageWidth = canvas.getModel().getImage().getHeight();
+        int imageHeight = canvas.getModel().getImage().getHeight();
+
+        //ChatCPT help code in order to scale in the right way the images inside the parent component
+        //prompt: "How can I maintain the image contained inside a parent component in Java Swing?"
+        // Calculate the scaling factors to fit the image inside the parent component
+        double scaleX = (double) parentComponentWidth / imageWidth;
+        double scaleY = (double) parentComponentHeight / imageHeight;
+
+        // Use the minimum scaling factor to maintain aspect ratio
+        double scale = Math.min(scaleX, scaleY);
+
+        // Calculate the dimensions of the scaled image
+        int newWidth = (int) (imageWidth * scale);
+        int newHeight = (int) (imageHeight * scale);
+
+        // Calculate the position to center the image within the parent component
+        int x = (parentComponentWidth - newWidth) / 2;
+        int y = (parentComponentHeight - newHeight) / 2;
+
+        //g.drawRect(x, y, newWidth, newHeight);
+        //new JLabel(new ImageIcon(image));
+
+        g.setColor(Color.RED);
+        Rectangle bounds = canvas.getBounds();
+        g.fillRect(x, y, newWidth, newHeight);
+        g.drawRect(x, y, newWidth, newHeight);
+
+
+        paintDrawnAnnotations(canvas);
+        paintTextAnnotations(canvas);
+    }
+
+    public void paintBackground(Graphics g, PhotoComponent canvas) {
+        //canvas.setBackground(Color.RED);
+
+        Rectangle bounds = canvas.getBounds();
+        g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        g.drawRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        g.setColor(Color.BLACK);
+
+        //Rectangle bounds = canvas.getBounds();
+        //g.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
+        //g.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
+
+        //.....
     }
 
     /*
@@ -69,7 +123,9 @@ public class PhotoComponentUI {
      Hint: Painted strokes will look much better if you use Java2D's anti-aliasing mechanism.
      Look at the setRenderingHints()method on Graphics2D.
      */
-    public void paintDrawnAnnotations() {
+    public void paintDrawnAnnotations(PhotoComponent canvas) {
+
+
 
     }
 
@@ -96,7 +152,11 @@ public class PhotoComponentUI {
      Hint: If you find yourself needing to do fancy FocusManagerstuff, you're probably working too hard.
      You should just be able to add KeyListeners to your component, and call setFocusable(true)on it.
      */
-    public void paintTextAnnotations() {
+    public void paintTextAnnotations(PhotoComponent canvas) {
+
+        JEditorPane textArea = new JEditorPane();
+        textArea.setText("HelloGFHDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+        canvas.add(textArea);
 
     }
 

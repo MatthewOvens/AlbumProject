@@ -45,7 +45,12 @@ public class PhotoComponent extends JComponent {
         setMouseListeners();
         //With a default photo?
         model.setImage("C:/Users/forna/Desktop/EIT/UPS/Uni stuff/Advanced programming/AlbumProject/src/main/resources/images/candy_shop.jpg");
-        model.addChangeListener(e -> repaint());
+
+        //Why we need it?
+        model.addChangeListener(e -> {
+            repaint(); //Serve?
+            revalidate(); //Serve?
+        });
 
         //model.addChangeListener(e -> repaint());  //Or other thing? For later to modify dinamically every object inizialized
     }
@@ -116,6 +121,9 @@ public class PhotoComponent extends JComponent {
     //The background should remain the same, only the image is going to be sobstituted by the plain white area
     public void flip() {
 
+        this.isFlipped = !this.isFlipped;
+        this.repaint();
+
     }
 
     /*
@@ -130,12 +138,13 @@ public class PhotoComponent extends JComponent {
 
         if(isFlipped) {
 
+            ui.paintPhotoBack(pen, this);
             //background -> image
             //ui.paint(pen, this);
         }
         else {
 
-            ui.paint(pen, this, image);
+            ui.paintPhoto(pen, this);
             //Background -> white surface -> annotation
             //ui.paint(pen, this);
         }

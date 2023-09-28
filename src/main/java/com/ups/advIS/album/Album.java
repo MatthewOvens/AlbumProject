@@ -162,8 +162,6 @@ public class Album extends JFrame { //JFrame managed to visualize the windows el
 
         //TODO make it dynamic
         photoPanel = new JPanel(new GridLayout(2,2,4,4));
-        photoPanel.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-
         //ViewportView cause JScrollPane has alreasy a JViewport added
         bodyPanel.setViewportView(photoPanel);
 

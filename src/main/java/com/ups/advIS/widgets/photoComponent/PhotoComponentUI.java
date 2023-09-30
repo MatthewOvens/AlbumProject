@@ -52,9 +52,13 @@ public class PhotoComponentUI {
 
             paintDrawnAnnotations(canvas);
             paintTextAnnotations(canvas);
+
+            g.dispose();
         }
         else {
             g.drawImage(canvas.getModel().getImage(), x, y, newWidth, newHeight, null);
+
+            g.dispose();
         }
     }
 
@@ -66,19 +70,26 @@ public class PhotoComponentUI {
         // Set the background color
         g2d.setColor(Color.WHITE);
         g2d.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        g2d.drawRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         // Set the drawing color and stroke
-        g2d.setColor(Color.BLUE);
-        g2d.setStroke(new BasicStroke(2.0f));
+        g2d.setColor(Color.LIGHT_GRAY);
+        g2d.setStroke(new BasicStroke(1.0f));
 
-        for (int x = 0; x < canvas.getWidth(); x += 20) {
-            for (int y = 0; y < canvas.getHeight(); y += 20) {
-                g2d.drawRect(x, y, 20, 20);
+        //Rendering of the background drawings
+        //Code found online to draw a particular pattern
+        for (int x = 0; x < canvas.getWidth(); x += 40) {
+            for (int y = 0; y < canvas.getHeight(); y += 40) {
+                // Draw circles at even positions
+                if ((x / 40 + y / 40) % 2 == 0) {
+                    g2d.fillOval(x, y, 20, 20);
+                }
+                // Draw squares at odd positions
+                else {
+                    g2d.fillRect(x, y, 20, 20);
+                }
             }
         }
-
-        // Dispose of the Graphics2D object
-        g2d.dispose();
 
         //g.setColor(Color.RED);
         //g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());

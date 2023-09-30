@@ -174,14 +174,16 @@ public class Album extends JFrame { //JFrame managed to visualize the windows el
 
         List<Image> storedImages = retriveStoredImages();
 
+
+
         //Loop over the retrived images adding the whole thing.
-        PhotoComponent photoComponent = new PhotoComponent();
+        PhotoComponent photoComponent = new PhotoComponent("C:/Users/forna/Desktop/EIT/UPS/Uni stuff/Advanced programming/AlbumProject/src/main/resources/images/candy_shop.jpg");
         photoPanel.add(photoComponent);
 
-        PhotoComponent photoComponent2 = new PhotoComponent();
+        PhotoComponent photoComponent2 = new PhotoComponent("C:/Users/forna/Desktop/EIT/UPS/Uni stuff/Advanced programming/AlbumProject/src/main/resources/images/prova.png");
         photoPanel.add(photoComponent2);
 
-        PhotoComponent photoComponent3 = new PhotoComponent();
+        PhotoComponent photoComponent3 = new PhotoComponent("C:/Users/forna/Desktop/EIT/UPS/Uni stuff/Advanced programming/AlbumProject/src/main/resources/images/tramonto.png");
         photoPanel.add(photoComponent3);
 
     }

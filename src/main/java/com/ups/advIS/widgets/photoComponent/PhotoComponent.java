@@ -38,7 +38,7 @@ public class PhotoComponent extends JComponent {
     public PhotoComponent() {
         //super();
 
-        this.setPreferredSize(new Dimension(preferredSize, preferredSize));
+        //this.setPreferredSize(new Dimension(preferredSize, preferredSize));
 
 
         //setImage()
@@ -56,7 +56,20 @@ public class PhotoComponent extends JComponent {
     }
 
     //For later
-    public PhotoComponent(Image image) {
+    public PhotoComponent(String imagePathName) {
+
+        this.setPreferredSize(new Dimension(preferredSize, preferredSize));
+
+        //setImage()
+        setMouseListeners();
+        //With a default photo?
+        model.setImage(imagePathName);
+
+        //Why we need it?
+        model.addChangeListener(e -> {
+            repaint(); //Serve?
+            revalidate(); //Serve?
+        });
 
     }
 
@@ -136,18 +149,8 @@ public class PhotoComponent extends JComponent {
 
         BufferedImage image = model.getImage();
 
-        if(isFlipped) {
+        ui.paintPhoto(pen, this, isFlipped);
 
-            ui.paintPhotoBack(pen, this);
-            //background -> image
-            //ui.paint(pen, this);
-        }
-        else {
-
-            ui.paintPhoto(pen, this);
-            //Background -> white surface -> annotation
-            //ui.paint(pen, this);
-        }
     }
 
 }

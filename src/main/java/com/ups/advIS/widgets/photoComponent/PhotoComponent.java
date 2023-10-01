@@ -40,7 +40,7 @@ public class PhotoComponent extends JComponent {
     public PhotoComponent() {
         //super();
 
-        //this.setPreferredSize(new Dimension(preferredSize, preferredSize));
+        this.setPreferredSize(new Dimension(preferredSize, preferredSize));
 
 
         //setImage()

@@ -71,7 +71,7 @@ public class PhotoComponentUI {
             g.fillRect(imageX, imageY, imageNewWidth, imageNewHeight);
             g.drawRect(imageX, imageY, imageNewWidth, imageNewHeight);
 
-            paintDrawnAnnotations(g, canvas);
+            paintDrawnAnnotations(g, canvas, scaleX, scaleY);
             paintTextAnnotations(g, canvas);
 
             g.dispose();
@@ -129,7 +129,9 @@ public class PhotoComponentUI {
      Hint: Painted strokes will look much better if you use Java2D's anti-aliasing mechanism.
      Look at the setRenderingHints()method on Graphics2D.
      */
-    public void paintDrawnAnnotations(Graphics g, PhotoComponent canvas) {
+    public void paintDrawnAnnotations(Graphics g, PhotoComponent canvas, double scaleX, double scaleY) {
+
+        //Corretto che reprinti tutto dall'inizio anche quando sto modificando qua?
 
         List<Shape> shapes = canvas.getModel().getShapes();
         Shape currentShape = canvas.getModel().getCurrentShape();
@@ -139,12 +141,12 @@ public class PhotoComponentUI {
 
         // Draw all stored shapes
         for (Shape shape : shapes) {
-            shape.draw(g2d);
+            shape.draw(g2d, scaleX, scaleY);
         }
 
         // Draw the current shape (if any)
         if (currentShape != null) {
-            currentShape.draw(g2d);
+            currentShape.draw(g2d, scaleX, scaleY);
         }
 
     }
@@ -174,6 +176,7 @@ public class PhotoComponentUI {
      */
     public void paintTextAnnotations(Graphics g, PhotoComponent canvas) {
 
+        //Corretto che reprinti tutto dall'inizio anche quando sto modificando qua?
         /*
         JEditorPane textArea = new JEditorPane();
         textArea.setText("HelloGFHDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");

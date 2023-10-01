@@ -30,16 +30,23 @@ public class Shape implements Drawable{
      * @param g
      */
     @Override
-    public void draw(Graphics g) {
+    public void draw(Graphics g, double scaleX, double scaleY) {
         if (points.size() != 0) {
             g.setColor(color);
 
             for (Point point : points) {
+
+                int x = point.x;
+                int y = point.y;
+
                 if(points.indexOf(point) == 0) {
-                    g.drawLine(point.x, point.y, point.x, point.y);
+                    g.drawLine(x, y, x, y);
                 }
                 else {
-                    g.drawLine(points.get(points.indexOf(point)-1).x, points.get(points.indexOf(point)-1).y, point.x, point.y);
+                    Point previousPoint = points.get(points.indexOf(point) - 1);
+                    int prevX = previousPoint.x;
+                    int prevY = previousPoint.y;
+                    g.drawLine(prevX, prevY, x, y);
                 }
             }
         }

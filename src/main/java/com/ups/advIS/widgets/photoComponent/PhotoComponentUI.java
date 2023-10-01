@@ -10,6 +10,27 @@ public class PhotoComponentUI {
 
     private JScrollPane panel;
 
+    private int imageX;
+    private int imageY;
+    private int imageNewWidth;
+    private int imageNewHeight;
+
+    public int getImageX() {
+        return imageX;
+    }
+
+    public int getImageY() {
+        return imageY;
+    }
+
+    public int getImageNewWidth() {
+        return imageNewWidth;
+    }
+
+    public int getImageNewHeight() {
+        return imageNewHeight;
+    }
+
     //Possible graphical frames around the component Background stuff
 
     /*
@@ -25,31 +46,30 @@ public class PhotoComponentUI {
 
         int parentComponentWidth = canvas.getWidth();
         int parentComponentHeight = canvas.getHeight();
-        int imageWidth = canvas.getModel().getImage().getWidth();
-        int imageHeight = canvas.getModel().getImage().getHeight();
+        BufferedImage image = canvas.getModel().getImage();
 
         //ChatCPT help code in order to scale in the right way the images inside the parent component
         //prompt: "How can I maintain the image contained inside a parent component in Java Swing, keeping its original aspect ratio?"
         // Calculate the scaling factors to fit the image inside the component
-        double scaleX = (double) parentComponentWidth / imageWidth;
-        double scaleY = (double) parentComponentHeight / imageHeight;
+        double scaleX = (double) parentComponentWidth / image.getWidth();
+        double scaleY = (double) parentComponentHeight / image.getHeight();
 
         // Use the minimum scaling factor to maintain aspect ratio
         double scale = Math.min(scaleX, scaleY);
 
         // Calculate the dimensions of the scaled image
-        int newWidth = (int) (imageWidth * scale);
-        int newHeight = (int) (imageHeight * scale);
+        imageNewWidth = (int) (image.getWidth() * scale);
+        imageNewHeight = (int) (image.getHeight() * scale);
 
         // Calculate the position to center the image within the component
-        int x = (parentComponentWidth - newWidth) / 2;
-        int y = (parentComponentHeight - newHeight) / 2;
+        imageX = (parentComponentWidth - imageNewWidth) / 2;
+        imageY = (parentComponentHeight - imageNewHeight) / 2;
 
         //Useful to avoid code duplication
         if(isFlipped) {
             g.setColor(Color.WHITE);
-            g.fillRect(x, y, newWidth, newHeight);
-            g.drawRect(x, y, newWidth, newHeight);
+            g.fillRect(imageX, imageY, imageNewWidth, imageNewHeight);
+            g.drawRect(imageX, imageY, imageNewWidth, imageNewHeight);
 
             paintDrawnAnnotations(g, canvas);
             paintTextAnnotations(g, canvas);
@@ -57,7 +77,7 @@ public class PhotoComponentUI {
             g.dispose();
         }
         else {
-            g.drawImage(canvas.getModel().getImage(), x, y, newWidth, newHeight, null);
+            g.drawImage(image, imageX, imageY, imageNewWidth, imageNewHeight, null);
 
             g.dispose();
         }
@@ -70,6 +90,7 @@ public class PhotoComponentUI {
 
         // Set the background color
         g2d.setColor(Color.WHITE);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         g2d.drawRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
@@ -109,8 +130,6 @@ public class PhotoComponentUI {
      Look at the setRenderingHints()method on Graphics2D.
      */
     public void paintDrawnAnnotations(Graphics g, PhotoComponent canvas) {
-
-        //TODO Corretto che riscriva tutto quando semplicemente sto disegnando un'altra figura?
 
         List<Shape> shapes = canvas.getModel().getShapes();
         Shape currentShape = canvas.getModel().getCurrentShape();

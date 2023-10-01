@@ -110,23 +110,19 @@ public class PhotoComponent extends JComponent {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                if(isFlipped) {
-                    model.setCurrentShape(new Shape());
-                    model.getCurrentShape().setColor(Color.BLACK);
+                if(isFlipped && isBehindPhoto(e.getPoint())) {
+                    model.setCurrentShape(new Shape(Color.BLACK));
                     model.getCurrentShape().addPoint(e.getPoint());
                 }
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                if(isFlipped) {
-                    Shape currentShape = model.getCurrentShape();
-
+                Shape currentShape = model.getCurrentShape();
+                if(isFlipped && currentShape != null) {
                     // Finalize the current shape when the mouse is released
-                    if (currentShape != null) {
-                        model.addShape(currentShape);
-                        currentShape = null;
-                    }
+                    model.addShape(currentShape);
+                    model.setCurrentShape(null);
                     repaint();
                 }
             }
@@ -137,11 +133,27 @@ public class PhotoComponent extends JComponent {
 
             @Override
             public void mouseDragged(MouseEvent e) {
+                Shape currentShape = model.getCurrentShape();
+
                 if(isFlipped) {
-                    // Update the current shape's endpoint while dragging to dynamically draw it
-                    if (model.getCurrentShape() != null) {
-                        model.getCurrentShape().addPoint(e.getPoint());
-                        repaint();
+                    if(isBehindPhoto(e.getPoint())) {
+                        // Update the current shape's endpoint while dragging to dynamically draw it
+                        if (model.getCurrentShape() != null) {
+                            model.getCurrentShape().addPoint(e.getPoint());
+                            repaint();
+                        }
+                        else {
+                            model.setCurrentShape(new Shape(Color.BLACK));
+                            model.getCurrentShape().addPoint(e.getPoint());
+                            repaint();
+                        }
+                    }
+                    else {
+                        if(currentShape != null) {
+                            // Finalize the current shape
+                            model.addShape(currentShape);
+                            model.setCurrentShape(null);
+                        }
                     }
                 }
             }
@@ -169,6 +181,18 @@ public class PhotoComponent extends JComponent {
 
         this.isFlipped = !this.isFlipped;
         this.repaint();
+
+    }
+
+    /**
+     * Function to check if the stroke is inside the photo limits or in the background
+     * @param point
+     * @return true if the point is inside the borders of the photo, false otherwise
+     */
+    public boolean isBehindPhoto(Point point) {
+
+        return point.getX() >= ui.getImageX() && point.getX() <= ui.getImageX() + ui.getImageNewWidth() &&
+                point.getY() >= ui.getImageY() && point.getY() <= ui.getImageY() + ui.getImageNewHeight();
 
     }
 

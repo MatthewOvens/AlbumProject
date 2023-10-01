@@ -10,6 +10,10 @@ public class Shape implements Drawable{
     List<Point> points = new ArrayList<>();
     private Color color;
 
+    public Shape(Color color) {
+        this.color = color;
+    }
+
     @Override
     public void addPoint(Point point) {
         this.points.add(point);

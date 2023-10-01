@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
+import java.util.List;
 
 public class PhotoComponentUI {
 
@@ -46,12 +47,12 @@ public class PhotoComponentUI {
 
         //Useful to avoid code duplication
         if(isFlipped) {
-            g.setColor(Color.BLACK);
+            g.setColor(Color.WHITE);
             g.fillRect(x, y, newWidth, newHeight);
             g.drawRect(x, y, newWidth, newHeight);
 
-            paintDrawnAnnotations(canvas);
-            paintTextAnnotations(canvas);
+            paintDrawnAnnotations(g, canvas);
+            paintTextAnnotations(g, canvas);
 
             g.dispose();
         }
@@ -90,10 +91,6 @@ public class PhotoComponentUI {
                 }
             }
         }
-
-        //g.setColor(Color.RED);
-        //g.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        //g.drawRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
 
     /*
@@ -111,9 +108,25 @@ public class PhotoComponentUI {
      Hint: Painted strokes will look much better if you use Java2D's anti-aliasing mechanism.
      Look at the setRenderingHints()method on Graphics2D.
      */
-    public void paintDrawnAnnotations(PhotoComponent canvas) {
+    public void paintDrawnAnnotations(Graphics g, PhotoComponent canvas) {
 
+        //TODO Corretto che riscriva tutto quando semplicemente sto disegnando un'altra figura?
 
+        List<Shape> shapes = canvas.getModel().getShapes();
+        Shape currentShape = canvas.getModel().getCurrentShape();
+
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        // Draw all stored shapes
+        for (Shape shape : shapes) {
+            shape.draw(g2d);
+        }
+
+        // Draw the current shape (if any)
+        if (currentShape != null) {
+            currentShape.draw(g2d);
+        }
 
     }
 
@@ -140,7 +153,7 @@ public class PhotoComponentUI {
      Hint: If you find yourself needing to do fancy FocusManagerstuff, you're probably working too hard.
      You should just be able to add KeyListeners to your component, and call setFocusable(true)on it.
      */
-    public void paintTextAnnotations(PhotoComponent canvas) {
+    public void paintTextAnnotations(Graphics g, PhotoComponent canvas) {
 
         /*
         JEditorPane textArea = new JEditorPane();

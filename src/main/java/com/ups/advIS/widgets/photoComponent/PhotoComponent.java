@@ -4,7 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 //The widget Controller, the main class
 
@@ -87,6 +89,7 @@ public class PhotoComponent extends JComponent {
     private void setMouseListeners() {
 
         this.addMouseListener(new MouseAdapter() {
+
             private long lastClickTime = 0;
             private final long doubleClickDelay = 300;
 
@@ -96,8 +99,6 @@ public class PhotoComponent extends JComponent {
 
                 if (currentTime - lastClickTime <= doubleClickDelay) {
                     // Double-click detected
-                    System.out.println("Double-click detected!");
-
                     flip();
                 } else {
                     // Single click
@@ -109,9 +110,41 @@ public class PhotoComponent extends JComponent {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                System.out.println("mousePressed");
+                if(isFlipped) {
+                    model.setCurrentShape(new Shape());
+                    model.getCurrentShape().setColor(Color.BLACK);
+                    model.getCurrentShape().addPoint(e.getPoint());
+                }
             }
 
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if(isFlipped) {
+                    Shape currentShape = model.getCurrentShape();
+
+                    // Finalize the current shape when the mouse is released
+                    if (currentShape != null) {
+                        model.addShape(currentShape);
+                        currentShape = null;
+                    }
+                    repaint();
+                }
+            }
+
+        });
+
+        this.addMouseMotionListener(new MouseAdapter() {
+
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                if(isFlipped) {
+                    // Update the current shape's endpoint while dragging to dynamically draw it
+                    if (model.getCurrentShape() != null) {
+                        model.getCurrentShape().addPoint(e.getPoint());
+                        repaint();
+                    }
+                }
+            }
         });
 
     }

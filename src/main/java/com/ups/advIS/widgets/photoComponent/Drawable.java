@@ -2,7 +2,7 @@ package com.ups.advIS.widgets.photoComponent;
 import java.awt.*;
 
 public interface Drawable {
-
-    public void draw(Graphics pen);
-
+    void addPoint(Point point);
+    void setColor(Color color);
+    void draw(Graphics g);
 }

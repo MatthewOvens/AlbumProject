@@ -15,10 +15,11 @@ import java.util.List;
 
 public class PhotoComponentModel {
 
-    //List of actual images stored, with link, maybe position, size..
-    //private List<Image> images = new ArrayList<>();
-
     private BufferedImage image;
+
+    //A list of shapes, what the shape represents
+    private List<Shape> shapes = new ArrayList<>();
+    private Shape currentShape = null;
     private List<ChangeListener> listeners = new ArrayList<>();
     //Annotations points
     //Text annotations
@@ -53,6 +54,24 @@ public class PhotoComponentModel {
         catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Shape> getShapes() {
+        return List.copyOf(shapes);
+    }
+
+    public void addShape(Shape shape) {
+        shapes.add(shape);
+
+        //Notify Event Listener????
+    }
+
+    public Shape getCurrentShape() {
+        return currentShape;
+    }
+
+    public void setCurrentShape(Shape currentShape) {
+        this.currentShape = currentShape;
     }
 
     public void changeImage(Image image) {

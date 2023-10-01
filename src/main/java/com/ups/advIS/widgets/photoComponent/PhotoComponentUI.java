@@ -71,7 +71,7 @@ public class PhotoComponentUI {
             g.fillRect(imageX, imageY, imageNewWidth, imageNewHeight);
             g.drawRect(imageX, imageY, imageNewWidth, imageNewHeight);
 
-            paintDrawnAnnotations(g, canvas, scaleX, scaleY);
+            paintDrawnAnnotations(g, canvas);
             paintTextAnnotations(g, canvas);
 
             g.dispose();
@@ -129,7 +129,7 @@ public class PhotoComponentUI {
      Hint: Painted strokes will look much better if you use Java2D's anti-aliasing mechanism.
      Look at the setRenderingHints()method on Graphics2D.
      */
-    public void paintDrawnAnnotations(Graphics g, PhotoComponent canvas, double scaleX, double scaleY) {
+    public void paintDrawnAnnotations(Graphics g, PhotoComponent canvas) {
 
         //Corretto che reprinti tutto dall'inizio anche quando sto modificando qua?
 
@@ -141,12 +141,12 @@ public class PhotoComponentUI {
 
         // Draw all stored shapes
         for (Shape shape : shapes) {
-            shape.draw(g2d, scaleX, scaleY);
+            shape.draw(g2d);
         }
 
         // Draw the current shape (if any)
         if (currentShape != null) {
-            currentShape.draw(g2d, scaleX, scaleY);
+            currentShape.draw(g2d);
         }
 
     }
@@ -177,11 +177,22 @@ public class PhotoComponentUI {
     public void paintTextAnnotations(Graphics g, PhotoComponent canvas) {
 
         //Corretto che reprinti tutto dall'inizio anche quando sto modificando qua?
-        /*
-        JEditorPane textArea = new JEditorPane();
-        textArea.setText("HelloGFHDFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
-        canvas.add(textArea);
-        */
+
+        List<TextBlock> textBlocks = canvas.getModel().getTexts();
+        TextBlock currentTextBlock = canvas.getModel().getCurrentTextBox();
+
+        //Graphics2D g2d = (Graphics2D) g;
+        //g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        // Draw all stored shapes
+        for (TextBlock text : textBlocks) {
+            text.draw(g, canvas.getWidth());
+        }
+
+        // Draw the current shape (if any)
+        if (currentTextBlock != null) {
+            currentTextBlock.draw(g, canvas.getWidth());
+        }
 
     }
 

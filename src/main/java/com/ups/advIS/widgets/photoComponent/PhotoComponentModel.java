@@ -1,8 +1,6 @@
 package com.ups.advIS.widgets.photoComponent;
 
 import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageInputStream;
-import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
@@ -19,17 +17,12 @@ public class PhotoComponentModel {
 
     //A list of shapes, what the shape represents
     private List<Shape> shapes = new ArrayList<>();
+    private List<TextBlock> texts = new ArrayList<>();
     private Shape currentShape = null;
+    private TextBlock currentTextBox = null;
     private List<ChangeListener> listeners = new ArrayList<>();
     //Annotations points
     //Text annotations
-
-    /*
-    public List<Image> getImages() {
-        return List.copyOf(images);
-        //return shapes;  NOT THIS CAUSE THE UI SHOULD NOT BE MODIFIED FROM OUTSIDE THE CLASS
-    }
-    */
 
     public PhotoComponentModel() { //For now, it should be custom with the image from the controller
         /*
@@ -54,6 +47,22 @@ public class PhotoComponentModel {
         catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<TextBlock> getTexts() {
+        return texts;
+    }
+
+    public void addTexts(TextBlock textBlock) {
+        this.texts.add(textBlock);
+    }
+
+    public TextBlock getCurrentTextBox() {
+        return currentTextBox;
+    }
+
+    public void setCurrentTextBox(TextBlock currentTextBox) {
+        this.currentTextBox = currentTextBox;
     }
 
     public List<Shape> getShapes() {

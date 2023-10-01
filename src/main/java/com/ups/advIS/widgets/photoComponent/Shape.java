@@ -14,7 +14,6 @@ public class Shape implements Drawable{
         this.color = color;
     }
 
-    @Override
     public void addPoint(Point point) {
         this.points.add(point);
     }
@@ -30,7 +29,7 @@ public class Shape implements Drawable{
      * @param g
      */
     @Override
-    public void draw(Graphics g, double scaleX, double scaleY) {
+    public void draw(Graphics g) {
         if (points.size() != 0) {
             g.setColor(color);
 

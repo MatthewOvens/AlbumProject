@@ -2,8 +2,7 @@ package com.ups.advIS.widgets.photoComponent;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -64,6 +63,7 @@ public class PhotoComponent extends JComponent {
 
         //setImage()
         setMouseListeners();
+        setKeyboardListeners();
         //With a default photo?
         model.setImage(imagePathName);
 
@@ -88,6 +88,8 @@ public class PhotoComponent extends JComponent {
 
     private void setMouseListeners() {
 
+        int pr = 32;
+
         this.addMouseListener(new MouseAdapter() {
 
             private long lastClickTime = 0;
@@ -102,7 +104,19 @@ public class PhotoComponent extends JComponent {
                     flip();
                 } else {
                     // Single click
-                    System.out.println("Single click");
+                    if(isFlipped && isBehindPhoto(e.getPoint())) {
+
+                        //Eventual check for previous text boxes
+                        //Text shit
+                        TextBlock textBlock = new TextBlock(e.getX(), e.getY());
+                        model.setCurrentTextBox(textBlock);
+                        model.addTexts(textBlock);
+
+                        setFocusable(true);
+                        requestFocus();
+
+                    }
+
                 }
 
                 lastClickTime = currentTime;
@@ -110,6 +124,9 @@ public class PhotoComponent extends JComponent {
 
             @Override
             public void mousePressed(MouseEvent e) {
+
+                System.out.println("mousePressed");
+
                 if(isFlipped && isBehindPhoto(e.getPoint())) {
                     model.setCurrentShape(new Shape(Color.BLACK));
                     model.getCurrentShape().addPoint(e.getPoint());
@@ -161,6 +178,26 @@ public class PhotoComponent extends JComponent {
 
     }
 
+    public void setKeyboardListeners() {
+
+        int prova = 2;
+
+        this.addKeyListener(new KeyAdapter() {
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                System.out.println("keyPressed");
+
+                if(isFlipped) {
+                    model.getCurrentTextBox().addChar(e.getKeyChar());
+                    repaint();
+                }
+            }
+
+        });
+
+    }
+
     /*
     If the users the window so that the shrink component cannot display the entire photograph,
     it should be scrollable so that the user can pan around the image.
@@ -204,10 +241,50 @@ public class PhotoComponent extends JComponent {
     @Override
     protected void paintComponent(Graphics pen) {
 
-        BufferedImage image = model.getImage();
-
         ui.paintPhoto(pen, this, isFlipped);
 
     }
+
+
+
+
+
+
+
+
+
+    /*
+
+    // Handle typed characters
+    public void typeText(String text) {
+        // Find the text block at the insertion point or create a new one
+        TextBlock currentBlock = findOrCreateTextBlock(insertionPointX, insertionPointY);
+
+        // Append the typed text to the current block
+        currentBlock.appendText(text);
+
+        // Check for text wrapping and adjust insertion point
+        handleTextWrapping(currentBlock);
+    }
+
+    // Iterate over text blocks and render them
+    public void paint(Graphics g) {
+        for (TextBlock block : textBlocks) {
+            block.draw(g);
+        }
+    }
+
+    // Helper method to find or create a text block at a specific position
+    private TextBlock findOrCreateTextBlock(int x, int y) {
+        // Implement logic to find or create a text block
+        // based on the position (x, y) and insertion point
+    }
+
+    // Helper method to handle text wrapping within a block
+    private void handleTextWrapping(TextBlock block) {
+        // Implement logic to handle text wrapping within the block
+    }
+
+    */
 
 }

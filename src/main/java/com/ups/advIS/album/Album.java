@@ -6,23 +6,27 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.StyledEditorKit;
 
 //Should it be a View? Cause it's initializing the whole thing. How to deal with this which is an upper class?
 public class Album extends JFrame { //JFrame managed to visualize the windows elements
 
+    PhotoComponent photoComponent;
     JPanel statusPanel;
     JPanel bodyPanel;
-    //JPanel bodyPanel;
-    JPanel photoPanel;
-    JScrollPane bodyPhotoContainer;
+    JScrollPane photoPanel;
     public static JLabel statusBar;
     private final int WIDTH = 800;
     private final int HEIGHT = 600;
@@ -36,10 +40,6 @@ public class Album extends JFrame { //JFrame managed to visualize the windows el
     public JToggleButton peopleButton;
     public JToggleButton placesButton;
     public JToggleButton schoolButton;
-
-    public int prova;
-
-    PhotoComponent photoComponent;
 
     /**
      * Constructor for the Album class, creates the main window.
@@ -55,7 +55,6 @@ public class Album extends JFrame { //JFrame managed to visualize the windows el
         createBody();
         createToolbar();
 
-        addPhotoComponent();
     }
 
     /**
@@ -81,9 +80,28 @@ public class Album extends JFrame { //JFrame managed to visualize the windows el
             public void actionPerformed(ActionEvent e) {
                 // Open a JFileChooser for importing photos
                 JFileChooser fileChooser = new JFileChooser();
+
+                // File filter that accepts image files (e.g., PNG, JPEG, GIF)
+                FileNameExtensionFilter imageFilter = new FileNameExtensionFilter("Image Files", "jpg", "jpeg", "png");
+                fileChooser.setFileFilter(imageFilter);
+
                 int returnValue = fileChooser.showOpenDialog(Album.this);
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
-                    statusBar.setText("Going to do something with the selected file (not implemented yet)");
+                    try {
+                        File selectedFile = fileChooser.getSelectedFile();
+
+                        // Check if the selected file has an allowed image file extension
+                        String fileName = selectedFile.getName().toLowerCase();
+                        if (fileName.endsWith(".png") || fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".gif")) {
+                            BufferedImage image = ImageIO.read(selectedFile);
+                            addPhotoComponent(image);
+                        } else {
+                            statusBar.setText("Invalid File. Please select a valid image file (PNG, JPG, JPEG, GIF).");
+                        }
+                    }
+                    catch (IOException exception) {
+                        exception.printStackTrace();
+                    }
                 }
             }
         });
@@ -95,7 +113,9 @@ public class Album extends JFrame { //JFrame managed to visualize the windows el
         delete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                statusBar.setText("Delete, will eventually delete a photo");
+                //Clean of the body
+                photoComponent = null;
+                photoPanel.setViewportView(null);
             }
         });
         fileMenu.add(delete);
@@ -162,26 +182,18 @@ public class Album extends JFrame { //JFrame managed to visualize the windows el
      * Creates the main content area (bodyPanel) of the window.
      */
     private void createBody() {
-        //Set of a Grid layout in order to resize the PhotosComponents in the right way while resizing the frame
-        bodyPanel = new JPanel();
-        //photoPanel = new JPanel(new GridLayout(1,1,4,4));
-        //photoPanel = new JPanel(new GridLayout(1,1,4,4));
-        //bodyPanel.add(photoPanel);
-        bodyPanel.setBackground(Color.decode("#A6F5FF"));
+        bodyPanel = new JPanel(new BorderLayout());
+        photoPanel = new JScrollPane();
+        bodyPanel.add(photoPanel, BorderLayout.CENTER);
+
         this.add(bodyPanel);
     }
 
-    private void addPhotoComponent() {
+    private void addPhotoComponent(BufferedImage image) {
+        //[For later eventually] Loop over the retrived images adding the whole thing.
 
-        //Render immediately the images stored in the model
-
-        List<Image> storedImages = retriveStoredImages();
-
-        //Loop over the retrived images adding the whole thing.
-
-        //photoComponent = new PhotoComponent();
-        //photoPanel.add(photoComponent);
-        //bodyPanel.add(photoComponent);
+        photoComponent = new PhotoComponent(image);
+        photoPanel.setViewportView(photoComponent);
 
     }
 

@@ -1,8 +1,6 @@
 package com.ups.advIS.widgets.photoComponent;
 
 import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageInputStream;
-import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
@@ -15,51 +13,52 @@ import java.util.List;
 
 public class PhotoComponentModel {
 
-    //List of actual images stored, with link, maybe position, size..
-    //private List<Image> images = new ArrayList<>();
+    private BufferedImage image;
 
-    private Image image;
+    private List<Shape> shapes = new ArrayList<>();
+    private List<TextBlock> texts = new ArrayList<>();
+    private Shape currentShape = null;
+    private TextBlock currentTextBox = null;
     private List<ChangeListener> listeners = new ArrayList<>();
-    //Annotations points
-    //Text annotations
 
-    /*
-    public List<Image> getImages() {
-        return List.copyOf(images);
-        //return shapes;  NOT THIS CAUSE THE UI SHOULD NOT BE MODIFIED FROM OUTSIDE THE CLASS
-    }
-    */
-
-    public PhotoComponentModel() { //For now, it should be custom with the image from the controller
-        /*
-        try {
-            this.image = ImageIO.read(new File("./images/candy_shop.jpg"));
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        */
-
-    }
-
-    public Image getImage() {
+    public BufferedImage getImage() {
         return image;
     }
 
-    public void setImage(String pathname) {
-        try {
-            this.image = ImageIO.read(new File(pathname));
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void setImage(BufferedImage image) {
+        this.image = image;
     }
 
-    public void changeImage(Image image) {
-        //images.add(image); //In case of a List
-        image = image;
-        //Need to notify them when a shape has been added
-        //notifyChangeListeners();
+    public List<TextBlock> getTexts() {
+        return texts;
+    }
+
+    public void addTexts(TextBlock textBlock) {
+        this.texts.add(textBlock);
+    }
+
+    public TextBlock getCurrentTextBox() {
+        return currentTextBox;
+    }
+
+    public void setCurrentTextBox(TextBlock currentTextBox) {
+        this.currentTextBox = currentTextBox;
+    }
+
+    public List<Shape> getShapes() {
+        return List.copyOf(shapes);
+    }
+
+    public void addShape(Shape shape) {
+        shapes.add(shape);
+    }
+
+    public Shape getCurrentShape() {
+        return currentShape;
+    }
+
+    public void setCurrentShape(Shape currentShape) {
+        this.currentShape = currentShape;
     }
 
     public void addChangeListener(ChangeListener listener) {
@@ -73,12 +72,6 @@ public class PhotoComponentModel {
             ChangeListener listener = (ChangeListener) var1.next();
             listener.stateChanged(new ChangeEvent(this));
         }
-    }
-
-
-    //????
-    public void revalidate() {
-
     }
 
 }

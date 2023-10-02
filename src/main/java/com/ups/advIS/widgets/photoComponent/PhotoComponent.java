@@ -30,8 +30,8 @@ public class PhotoComponent extends JComponent {
      * but you probably don't want any minimumSize or maximumSize. When your PhotoComponent is initialized,
      * and before any photo is loaded, you probably want to use some default value for its size and preferred size.
      */
-    private int size = 200; //Default value
-    private int preferredSize = 200; //Default value
+    private int size = 500; //Default value
+    private int preferredSize = 500; //Default value
 
     //Flipped state of the component
     private boolean isFlipped = false;
@@ -57,20 +57,19 @@ public class PhotoComponent extends JComponent {
     }
 
     //For later
-    public PhotoComponent(String imagePathName) {
+    public PhotoComponent(String imagePathName, int width, int height) {
 
         this.setPreferredSize(new Dimension(preferredSize, preferredSize));
 
-        //setImage()
         setMouseListeners();
         setKeyboardListeners();
-        //With a default photo?
         model.setImage(imagePathName);
+        this.setPreferredSize(new Dimension(model.getImage().getWidth(), model.getImage().getHeight()));
 
-        //Why we need it?
+        //To revalidate and repaint every time a new PhotoComponent is added
         model.addChangeListener(e -> {
-            repaint(); //Serve?
-            revalidate(); //Serve?
+            repaint();
+            revalidate();
         });
 
     }
@@ -227,9 +226,10 @@ public class PhotoComponent extends JComponent {
      * @return true if the point is inside the borders of the photo, false otherwise
      */
     public boolean isBehindPhoto(Point point) {
+        BufferedImage image = model.getImage();
 
-        return point.getX() >= ui.getImageX() && point.getX() <= ui.getImageX() + ui.getImageNewWidth() &&
-                point.getY() >= ui.getImageY() && point.getY() <= ui.getImageY() + ui.getImageNewHeight();
+        return point.getX() >= ui.getImageX() && point.getX() <= ui.getImageX() + image.getWidth() &&
+                point.getY() >= ui.getImageY() && point.getY() <= ui.getImageY() + image.getHeight();
 
     }
 

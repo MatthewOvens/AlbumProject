@@ -12,8 +12,8 @@ public class PhotoComponentUI {
 
     private int imageX;
     private int imageY;
-    private int imageNewWidth;
-    private int imageNewHeight;
+    //private int imageNewWidth;
+    //private int imageNewHeight;
 
     public int getImageX() {
         return imageX;
@@ -23,6 +23,7 @@ public class PhotoComponentUI {
         return imageY;
     }
 
+    /*
     public int getImageNewWidth() {
         return imageNewWidth;
     }
@@ -30,6 +31,8 @@ public class PhotoComponentUI {
     public int getImageNewHeight() {
         return imageNewHeight;
     }
+
+     */
 
     //Possible graphical frames around the component Background stuff
 
@@ -48,6 +51,7 @@ public class PhotoComponentUI {
         int parentComponentHeight = canvas.getHeight();
         BufferedImage image = canvas.getModel().getImage();
 
+        /*
         //ChatCPT help code in order to scale in the right way the images inside the parent component
         //prompt: "How can I maintain the image contained inside a parent component in Java Swing, keeping its original aspect ratio?"
         // Calculate the scaling factors to fit the image inside the component
@@ -61,15 +65,18 @@ public class PhotoComponentUI {
         imageNewWidth = (int) (image.getWidth() * scale);
         imageNewHeight = (int) (image.getHeight() * scale);
 
+        */
+
         // Calculate the position to center the image within the component
-        imageX = (parentComponentWidth - imageNewWidth) / 2;
-        imageY = (parentComponentHeight - imageNewHeight) / 2;
+        imageX = (parentComponentWidth - image.getWidth()) / 2;
+        imageY = (parentComponentHeight - image.getHeight()) / 2;
+
 
         //Useful to avoid code duplication
         if(isFlipped) {
             g.setColor(Color.WHITE);
-            g.fillRect(imageX, imageY, imageNewWidth, imageNewHeight);
-            g.drawRect(imageX, imageY, imageNewWidth, imageNewHeight);
+            g.fillRect(imageX, imageY, image.getWidth(), image.getHeight());
+            g.drawRect(imageX, imageY, image.getWidth(), image.getHeight());
 
             paintDrawnAnnotations(g, canvas);
             paintTextAnnotations(g, canvas);
@@ -77,7 +84,7 @@ public class PhotoComponentUI {
             g.dispose();
         }
         else {
-            g.drawImage(image, imageX, imageY, imageNewWidth, imageNewHeight, null);
+            g.drawImage(image, imageX, imageY, image.getWidth(), image.getHeight(), null);
 
             g.dispose();
         }
@@ -87,6 +94,9 @@ public class PhotoComponentUI {
 
         // Create a Graphics2D object for advanced drawing
         Graphics2D g2d = (Graphics2D) g;
+
+        System.out.println(canvas.getHeight());
+        System.out.println(canvas.getWidth());
 
         // Set the background color
         g2d.setColor(Color.WHITE);

@@ -19,9 +19,8 @@ import javax.swing.text.StyledEditorKit;
 public class Album extends JFrame { //JFrame managed to visualize the windows elements
 
     JPanel statusPanel;
-    JScrollPane bodyPanel;
-    JPanel photoPanel;
-    JScrollPane bodyPhotoContainer;
+    JPanel bodyPanel;
+    JScrollPane photoPanel;
     public static JLabel statusBar;
     private final int WIDTH = 800;
     private final int HEIGHT = 600;
@@ -158,12 +157,16 @@ public class Album extends JFrame { //JFrame managed to visualize the windows el
      */
     private void createBody() {
         //Set of a Grid layout in order to resize the PhotosComponents in the right way while resizing the frame
-        bodyPanel = new JScrollPane();
+        bodyPanel = new JPanel(new BorderLayout());
 
-        //TODO make it dynamic
-        photoPanel = new JPanel(new GridLayout(2,2,10,10));
-        //ViewportView cause JScrollPane has alreasy a JViewport added
-        bodyPanel.setViewportView(photoPanel);
+        //new GridLayout(2,2,10,10)
+        photoPanel = new JScrollPane();
+
+        //ViewportView cause JScrollPane has already a JViewport added
+        bodyPanel.add(photoPanel, BorderLayout.CENTER);
+
+        System.out.println(bodyPanel.getWidth());
+        System.out.println(bodyPanel.getHeight());
 
         this.add(bodyPanel);
     }
@@ -174,17 +177,16 @@ public class Album extends JFrame { //JFrame managed to visualize the windows el
 
         List<Image> storedImages = retriveStoredImages();
 
-
-
         //Loop over the retrived images adding the whole thing.
-        PhotoComponent photoComponent = new PhotoComponent("C:/Users/forna/Desktop/EIT/UPS/Uni stuff/Advanced programming/AlbumProject/src/main/resources/images/candy_shop.jpg");
-        photoPanel.add(photoComponent);
 
-        PhotoComponent photoComponent2 = new PhotoComponent("C:/Users/forna/Desktop/EIT/UPS/Uni stuff/Advanced programming/AlbumProject/src/main/resources/images/prova.png");
-        photoPanel.add(photoComponent2);
+        PhotoComponent photoComponent2 = new PhotoComponent("C:/Users/forna/Desktop/EIT/UPS/Uni stuff/Advanced programming/AlbumProject/src/main/resources/images/prova.png", bodyPanel.getWidth(), bodyPanel.getHeight());
+        photoPanel.setViewportView(photoComponent2);
 
-        PhotoComponent photoComponent3 = new PhotoComponent("C:/Users/forna/Desktop/EIT/UPS/Uni stuff/Advanced programming/AlbumProject/src/main/resources/images/tramonto.png");
-        photoPanel.add(photoComponent3);
+        //PhotoComponent photoComponent = new PhotoComponent("C:/Users/forna/Desktop/EIT/UPS/Uni stuff/Advanced programming/AlbumProject/src/main/resources/images/candy_shop.jpg");
+        //photoPanel.add(photoComponent);
+
+        //PhotoComponent photoComponent3 = new PhotoComponent("C:/Users/forna/Desktop/EIT/UPS/Uni stuff/Advanced programming/AlbumProject/src/main/resources/images/tramonto.png");
+        //photoPanel.add(photoComponent3);
 
     }
 

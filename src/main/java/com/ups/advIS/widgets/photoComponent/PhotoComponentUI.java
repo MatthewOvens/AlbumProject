@@ -8,8 +8,6 @@ import java.util.List;
 
 public class PhotoComponentUI {
 
-    private JScrollPane panel;
-
     private int imageX;
     private int imageY;
 
@@ -21,16 +19,6 @@ public class PhotoComponentUI {
         return imageY;
     }
 
-
-    //Possible graphical frames around the component Background stuff
-
-    /*
-    So that the component looks good in cases where the window is larger than the photo itself,
-    you should render some nice-looking background behind the photo,
-    which will be visible when the photo doesn't cover the entire extent of the component.
-    This can be as simple as a solid color, or some pattern such as graph paper.
-    You'd create this effect by simply doing some drawing in your drawing method before rendering the image.
-     */
     public void paintPhoto(Graphics g, PhotoComponent canvas, Boolean isFlipped, Color drawingsColor, Color textsColor) {
 
         paintBackground(g, canvas);
@@ -38,22 +26,6 @@ public class PhotoComponentUI {
         int parentComponentWidth = canvas.getWidth();
         int parentComponentHeight = canvas.getHeight();
         BufferedImage image = canvas.getModel().getImage();
-
-        /*
-        //ChatCPT help code in order to scale in the right way the images inside the parent component
-        //prompt: "How can I maintain the image contained inside a parent component in Java Swing, keeping its original aspect ratio?"
-        // Calculate the scaling factors to fit the image inside the component
-        double scaleX = (double) parentComponentWidth / image.getWidth();
-        double scaleY = (double) parentComponentHeight / image.getHeight();
-
-        // Use the minimum scaling factor to maintain aspect ratio
-        double scale = Math.min(scaleX, scaleY);
-
-        // Calculate the dimensions of the scaled image
-        imageNewWidth = (int) (image.getWidth() * scale);
-        imageNewHeight = (int) (image.getHeight() * scale);
-
-        */
 
         // Calculate the position to center the image within the component
         imageX = (parentComponentWidth - image.getWidth()) / 2;
@@ -78,13 +50,13 @@ public class PhotoComponentUI {
         }
     }
 
+    /**
+     * Function to draw the background of the component
+     */
     public void paintBackground(Graphics g, PhotoComponent canvas) {
 
         // Create a Graphics2D object for advanced drawing
         Graphics2D g2d = (Graphics2D) g;
-
-        System.out.println(canvas.getHeight());
-        System.out.println(canvas.getWidth());
 
         // Set the background color
         g2d.setColor(Color.WHITE);
@@ -112,24 +84,10 @@ public class PhotoComponentUI {
         }
     }
 
-    /*
-     What this means is that the user should be able to draw freehand strokes by dragging the mouse on the back of the
-     photo with the button pressed. The component should show the stroke while it is in the process of being drawn,
-     to give appropriate feedback to the user.
-     Drawing should only occur in the white back-of-photo area, not the background.
-
-
-     Hint: Remember that you'll need to redraw all of these same strokes anytime the Swing repaint pipeline
-     tells you that you need to paint your component. The classic way to do this is to add strokes to a display list
-     that contains the things to be rendered, and then in your paint code you simply iterate through the items to be painted,
-     rendering them to the screen.
-
-     Hint: Painted strokes will look much better if you use Java2D's anti-aliasing mechanism.
-     Look at the setRenderingHints()method on Graphics2D.
+    /**
+     * Function to draw free-hand drawings inside the canva
      */
     public void paintDrawnAnnotations(Graphics g, PhotoComponent canvas, Color color) {
-
-        //Corretto che reprinti tutto dall'inizio anche quando sto modificando qua?
 
         List<Shape> shapes = canvas.getModel().getShapes();
         Shape currentShape = canvas.getModel().getCurrentShape();

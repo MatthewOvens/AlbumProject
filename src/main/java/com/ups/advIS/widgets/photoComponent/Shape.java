@@ -3,7 +3,6 @@ package com.ups.advIS.widgets.photoComponent;
 import java.util.List;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Stack;
 
 public class Shape implements Drawable{
 

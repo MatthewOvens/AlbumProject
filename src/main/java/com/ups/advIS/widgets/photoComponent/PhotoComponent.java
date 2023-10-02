@@ -77,6 +77,9 @@ public class PhotoComponent extends JComponent {
         return model;
     }
 
+    /**
+     * MouseListeners implementation
+     */
     private void setMouseListeners() {
 
         this.addMouseListener(new MouseAdapter() {
@@ -113,9 +116,6 @@ public class PhotoComponent extends JComponent {
 
             @Override
             public void mousePressed(MouseEvent e) {
-
-                System.out.println("mousePressed");
-
                 if(isFlipped && isBehindPhoto(e.getPoint())) {
                     model.setCurrentShape(new Shape(Color.BLACK));
                     model.getCurrentShape().addPoint(e.getPoint());
@@ -167,6 +167,9 @@ public class PhotoComponent extends JComponent {
 
     }
 
+    /**
+     * KeyboardListeners implementation
+     */
     public void setKeyboardListeners() {
 
         this.addKeyListener(new KeyAdapter() {
@@ -182,7 +185,6 @@ public class PhotoComponent extends JComponent {
         });
 
     }
-
 
     public void flip() {
 

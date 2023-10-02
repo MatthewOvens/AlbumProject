@@ -15,26 +15,11 @@ public class PhotoComponentModel {
 
     private BufferedImage image;
 
-    //A list of shapes, what the shape represents
     private List<Shape> shapes = new ArrayList<>();
     private List<TextBlock> texts = new ArrayList<>();
     private Shape currentShape = null;
     private TextBlock currentTextBox = null;
     private List<ChangeListener> listeners = new ArrayList<>();
-    //Annotations points
-    //Text annotations
-
-    public PhotoComponentModel() { //For now, it should be custom with the image from the controller
-        /*
-        try {
-            this.image = ImageIO.read(new File("./images/candy_shop.jpg"));
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        */
-
-    }
 
     public BufferedImage getImage() {
         return image;
@@ -66,8 +51,6 @@ public class PhotoComponentModel {
 
     public void addShape(Shape shape) {
         shapes.add(shape);
-
-        //Notify Event Listener????
     }
 
     public Shape getCurrentShape() {
@@ -78,18 +61,8 @@ public class PhotoComponentModel {
         this.currentShape = currentShape;
     }
 
-    public void changeImage(Image image) {
-        //images.add(image); //In case of a List
-        image = image;
-        //Need to notify them when a shape has been added
-        //notifyChangeListeners();
-    }
-
     public void addChangeListener(ChangeListener listener) {
         listeners.add(listener);
-
-        //Sembra entri solo all'inizio, è corretto?
-        System.out.println("Entrato in listener");
     }
 
     private void notifyChangeListeners() {
@@ -99,12 +72,6 @@ public class PhotoComponentModel {
             ChangeListener listener = (ChangeListener) var1.next();
             listener.stateChanged(new ChangeEvent(this));
         }
-    }
-
-
-    //????
-    public void revalidate() {
-
     }
 
 }

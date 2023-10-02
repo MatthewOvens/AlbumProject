@@ -49,7 +49,8 @@ public class Album extends JFrame { //JFrame managed to visualize the windows el
         createBody();
         createToolbar();
 
-        addPhotoComponent();
+        //Da togliere
+        addPhotoComponent("C:/Users/forna/Desktop/EIT/UPS/Uni stuff/Advanced programming/AlbumProject/src/main/resources/images/prova.png");
     }
 
     /**
@@ -78,6 +79,9 @@ public class Album extends JFrame { //JFrame managed to visualize the windows el
                 int returnValue = fileChooser.showOpenDialog(Album.this);
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     statusBar.setText("Going to do something with the selected file (not implemented yet)");
+
+                    addPhotoComponent("C:/Users/forna/Desktop/EIT/UPS/Uni stuff/Advanced programming/AlbumProject/src/main/resources/images/tramonto.png");
+
                 }
             }
         });
@@ -171,7 +175,7 @@ public class Album extends JFrame { //JFrame managed to visualize the windows el
         this.add(bodyPanel);
     }
 
-    private void addPhotoComponent() {
+    private void addPhotoComponent(String image) {
 
         //Render immediately the images stored in the model
 
@@ -179,7 +183,7 @@ public class Album extends JFrame { //JFrame managed to visualize the windows el
 
         //Loop over the retrived images adding the whole thing.
 
-        PhotoComponent photoComponent2 = new PhotoComponent("C:/Users/forna/Desktop/EIT/UPS/Uni stuff/Advanced programming/AlbumProject/src/main/resources/images/prova.png", bodyPanel.getWidth(), bodyPanel.getHeight());
+        PhotoComponent photoComponent2 = new PhotoComponent(image, bodyPanel.getWidth(), bodyPanel.getHeight());
         photoPanel.setViewportView(photoComponent2);
 
         //PhotoComponent photoComponent = new PhotoComponent("C:/Users/forna/Desktop/EIT/UPS/Uni stuff/Advanced programming/AlbumProject/src/main/resources/images/candy_shop.jpg");

@@ -12,8 +12,6 @@ public class PhotoComponentUI {
 
     private int imageX;
     private int imageY;
-    //private int imageNewWidth;
-    //private int imageNewHeight;
 
     public int getImageX() {
         return imageX;
@@ -23,16 +21,6 @@ public class PhotoComponentUI {
         return imageY;
     }
 
-    /*
-    public int getImageNewWidth() {
-        return imageNewWidth;
-    }
-
-    public int getImageNewHeight() {
-        return imageNewHeight;
-    }
-
-     */
 
     //Possible graphical frames around the component Background stuff
 
@@ -43,7 +31,7 @@ public class PhotoComponentUI {
     This can be as simple as a solid color, or some pattern such as graph paper.
     You'd create this effect by simply doing some drawing in your drawing method before rendering the image.
      */
-    public void paintPhoto(Graphics g, PhotoComponent canvas, Boolean isFlipped) {
+    public void paintPhoto(Graphics g, PhotoComponent canvas, Boolean isFlipped, Color drawingsColor, Color textsColor) {
 
         paintBackground(g, canvas);
 
@@ -78,8 +66,8 @@ public class PhotoComponentUI {
             g.fillRect(imageX, imageY, image.getWidth(), image.getHeight());
             g.drawRect(imageX, imageY, image.getWidth(), image.getHeight());
 
-            paintDrawnAnnotations(g, canvas);
-            paintTextAnnotations(g, canvas);
+            paintDrawnAnnotations(g, canvas, drawingsColor);
+            paintTextAnnotations(g, canvas, textsColor);
 
             g.dispose();
         }
@@ -139,7 +127,7 @@ public class PhotoComponentUI {
      Hint: Painted strokes will look much better if you use Java2D's anti-aliasing mechanism.
      Look at the setRenderingHints()method on Graphics2D.
      */
-    public void paintDrawnAnnotations(Graphics g, PhotoComponent canvas) {
+    public void paintDrawnAnnotations(Graphics g, PhotoComponent canvas, Color color) {
 
         //Corretto che reprinti tutto dall'inizio anche quando sto modificando qua?
 
@@ -151,57 +139,35 @@ public class PhotoComponentUI {
 
         // Draw all stored shapes
         for (Shape shape : shapes) {
+            shape.setColor(color);
             shape.draw(g2d);
         }
 
         // Draw the current shape (if any)
         if (currentShape != null) {
+            currentShape.setColor(color);
             currentShape.draw(g2d);
         }
 
     }
 
-    /*
-    The way this should work is that the user clicks on the photo back to set an insertion point for the text.
-    Then, any typing will begin to fill the photo back starting at that insertion point.
-    Clicking again will reset the insertion point to another position.
-
-    - You should implement wrapping. This means that when your typing hits the end of the photo back the text should continue to
-    display starting on the next line.
-    - Use reasonable line spacing. Remember: ascent + descent + leading.
-
-    The key is to remember that, as with strokes above, you'll need to keep a data structure for the text that will be rendered
-    by your component. One way to architect things is to simply create a new object to hold a text block whenever the insertion point is set;
-    this object only needs to remember the insertion point and the set of characters entered at that point.
-    characters are typed Whenever they are simply added to the current text block object. The job of your paint code, then,
-    is simply to iterate over the list of text blocks and draw them to the screen, wrapping as you draw based on the size of the photo back.
-
-     Hint: Telling the difference between "text mode" and "draw mode" should be easy:
-     If you see a mouse down followed by movement, you can assume you're drawing.
-     If you see a mouse click (press followed by release), you can assume you've set the text insertion point for keyboard entry.
-     (QUESTA UNA STRONZATA SECONOD ME BASTEREBBE CAMBIARE UN ATTIMO METTENDOCI PER ESEMPIO LO STROKE CON IL CLICK DESTRO)
-
-     Hint: If you find yourself needing to do fancy FocusManagerstuff, you're probably working too hard.
-     You should just be able to add KeyListeners to your component, and call setFocusable(true)on it.
+    /**
+     * Function to render dinamically what the user is typing
      */
-    public void paintTextAnnotations(Graphics g, PhotoComponent canvas) {
-
-        //Corretto che reprinti tutto dall'inizio anche quando sto modificando qua?
+    public void paintTextAnnotations(Graphics g, PhotoComponent canvas, Color color) {
 
         List<TextBlock> textBlocks = canvas.getModel().getTexts();
         TextBlock currentTextBlock = canvas.getModel().getCurrentTextBox();
 
-        //Graphics2D g2d = (Graphics2D) g;
-        //g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
         // Draw all stored shapes
         for (TextBlock text : textBlocks) {
-            text.draw(g, canvas.getWidth(), canvas.getHeight());
+            text.setColor(color);
+            text.draw(g, canvas, imageX, imageY);
         }
 
         // Draw the current shape (if any)
         if (currentTextBlock != null) {
-            currentTextBlock.draw(g, canvas.getWidth(), canvas.getHeight());
+            currentTextBlock.draw(g, canvas, imageX, imageY);
         }
 
     }

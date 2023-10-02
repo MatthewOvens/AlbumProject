@@ -184,12 +184,14 @@ public class PhotoComponent extends JComponent {
         this.addKeyListener(new KeyAdapter() {
 
             @Override
-            public void keyPressed(KeyEvent e) {
+            public void keyTyped(KeyEvent e) {
                 System.out.println("keyPressed");
 
                 if(isFlipped) {
                     model.getCurrentTextBox().addChar(e.getKeyChar());
                     repaint();
+
+                    //If don't recommendable with hashcode can be done saving specific chars here at the recognition of a special character
                 }
             }
 
@@ -197,22 +199,9 @@ public class PhotoComponent extends JComponent {
 
     }
 
-    /*
-    If the users the window so that the shrink component cannot display the entire photograph,
-    it should be scrollable so that the user can pan around the image.
-    The easiest way to do this is to simply insert your PhotoComponent into a JScrollPane,
-    and then insert that JScrollPane into the container area in your application.
-    There are settings on JScrollPane that determine whether the scrollbars are always displayed,
-    or just when they are needed (it's fine if the scrollbars are always displayed).
-    The way JScrollPane works is that it allows its child to be any size it wants,
-    but clips and positions it so that the correct part is shown under the visible region.
-    This is why you want to make sure your component has a size and preferred size.
-    If you reload a photo and change the size, you will probably want to call revalidate()on
-    yourPhotoComponent so that the scroll pane “notices” that its size has been updated.
+    /**
+     *
      */
-
-    //At the event listener to "double click" it calls the method to render the back
-    //The background should remain the same, only the image is going to be sobstituted by the plain white area
     public void flip() {
 
         this.isFlipped = !this.isFlipped;
@@ -241,50 +230,8 @@ public class PhotoComponent extends JComponent {
     @Override
     protected void paintComponent(Graphics pen) {
 
-        ui.paintPhoto(pen, this, isFlipped);
+        ui.paintPhoto(pen, this, isFlipped, Color.BLUE, Color.BLUE);
 
     }
-
-
-
-
-
-
-
-
-
-    /*
-
-    // Handle typed characters
-    public void typeText(String text) {
-        // Find the text block at the insertion point or create a new one
-        TextBlock currentBlock = findOrCreateTextBlock(insertionPointX, insertionPointY);
-
-        // Append the typed text to the current block
-        currentBlock.appendText(text);
-
-        // Check for text wrapping and adjust insertion point
-        handleTextWrapping(currentBlock);
-    }
-
-    // Iterate over text blocks and render them
-    public void paint(Graphics g) {
-        for (TextBlock block : textBlocks) {
-            block.draw(g);
-        }
-    }
-
-    // Helper method to find or create a text block at a specific position
-    private TextBlock findOrCreateTextBlock(int x, int y) {
-        // Implement logic to find or create a text block
-        // based on the position (x, y) and insertion point
-    }
-
-    // Helper method to handle text wrapping within a block
-    private void handleTextWrapping(TextBlock block) {
-        // Implement logic to handle text wrapping within the block
-    }
-
-    */
 
 }

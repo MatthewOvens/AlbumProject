@@ -95,16 +95,19 @@ public class PhotoComponentUI {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+        Point scalePoint = new Point(imageX, imageY);
+
         // Draw all stored shapes
         for (Shape shape : shapes) {
             shape.setColor(color);
-            shape.draw(g2d);
+
+            shape.draw(g2d, scalePoint);
         }
 
         // Draw the current shape (if any)
         if (currentShape != null) {
             currentShape.setColor(color);
-            currentShape.draw(g2d);
+            currentShape.draw(g2d, scalePoint);
         }
 
     }

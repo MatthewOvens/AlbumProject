@@ -68,7 +68,7 @@ public class TextBlock {
      * Drawing function of each shape. It basically draw a line between each point in the list and the previous one
      * if it's the first one of the list it draws just a single point
      */
-    public void draw(Graphics g, PhotoComponent canvas,int imageX, int imageY) {
+    public void draw(Graphics g, PhotoComponent canvas, int imageX, int imageY) {
         if (textChars.size() != 0) {
 
             BufferedImage image = canvas.getModel().getImage();
@@ -77,8 +77,8 @@ public class TextBlock {
 
             FontMetrics fontMetrics = g.getFontMetrics(); // Get font metrics for text measurements
 
-            int currentX = x;
-            int currentY = y;
+            int currentX = x + imageX;
+            int currentY = y + imageY;
 
             boolean isCapsLockOn = false;
             boolean isShiftPressed = false;
@@ -94,7 +94,7 @@ public class TextBlock {
                 // Handle special characters based on hash codes. Enter
                 if(charHashCode == 10) {
                     // Enter (Newline)
-                    currentX = x;
+                    currentX = x + imageX;
                     currentY += lineHeight;
                 }
 
@@ -106,7 +106,7 @@ public class TextBlock {
                 // Check if adding the character would exceed the width of the drawing area
                 if (currentX + charWidth > imageX + image.getWidth()) {
                     // Move to the next line
-                    currentX = x;
+                    currentX = x + imageX;
                     currentY += lineHeight;
                 }
 

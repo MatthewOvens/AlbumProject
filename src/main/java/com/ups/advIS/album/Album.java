@@ -23,6 +23,7 @@ import javax.swing.text.StyledEditorKit;
 //Should it be a View? Cause it's initializing the whole thing. How to deal with this which is an upper class?
 public class Album extends JFrame { //JFrame managed to visualize the windows elements
 
+    PhotoComponent photoComponent;
     JPanel statusPanel;
     JPanel bodyPanel;
     JScrollPane photoPanel;
@@ -112,9 +113,9 @@ public class Album extends JFrame { //JFrame managed to visualize the windows el
         delete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                statusBar.setText("Delete, will eventually delete a photo");
-
-
+                //Clean of the body
+                photoComponent = null;
+                photoPanel.setViewportView(null);
             }
         });
         fileMenu.add(delete);
@@ -191,7 +192,7 @@ public class Album extends JFrame { //JFrame managed to visualize the windows el
     private void addPhotoComponent(BufferedImage image) {
         //[For later eventually] Loop over the retrived images adding the whole thing.
 
-        PhotoComponent photoComponent = new PhotoComponent(image);
+        photoComponent = new PhotoComponent(image);
         photoPanel.setViewportView(photoComponent);
 
     }

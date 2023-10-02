@@ -100,7 +100,7 @@ public class PhotoComponent extends JComponent {
 
                         //Eventual check for previous text boxes
                         //Text shit
-                        TextBlock textBlock = new TextBlock(e.getX(), e.getY());
+                        TextBlock textBlock = new TextBlock(e.getX() - ui.getImageX(), e.getY() - ui.getImageY());
                         model.setCurrentTextBox(textBlock);
                         model.addTexts(textBlock);
 
@@ -118,7 +118,7 @@ public class PhotoComponent extends JComponent {
             public void mousePressed(MouseEvent e) {
                 if(isFlipped && isBehindPhoto(e.getPoint())) {
                     model.setCurrentShape(new Shape(Color.BLACK));
-                    model.getCurrentShape().addPoint(e.getPoint());
+                    model.getCurrentShape().addPoint(new Point(e.getPoint().x - ui.getImageX(), e.getPoint().y - ui.getImageY()));
                 }
             }
 
@@ -145,12 +145,12 @@ public class PhotoComponent extends JComponent {
                     if(isBehindPhoto(e.getPoint())) {
                         // Update the current shape's endpoint while dragging to dynamically draw it
                         if (model.getCurrentShape() != null) {
-                            model.getCurrentShape().addPoint(e.getPoint());
+                            model.getCurrentShape().addPoint(new Point(e.getPoint().x - ui.getImageX(), e.getPoint().y - ui.getImageY()));
                             repaint();
                         }
                         else {
                             model.setCurrentShape(new Shape(Color.BLACK));
-                            model.getCurrentShape().addPoint(e.getPoint());
+                            model.getCurrentShape().addPoint(new Point(e.getPoint().x - ui.getImageX(), e.getPoint().y - ui.getImageY()));
                             repaint();
                         }
                     }

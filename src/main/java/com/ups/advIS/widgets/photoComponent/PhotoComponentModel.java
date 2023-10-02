@@ -40,13 +40,8 @@ public class PhotoComponentModel {
         return image;
     }
 
-    public void setImage(String pathname) {
-        try {
-            this.image = ImageIO.read(new File(pathname));
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void setImage(BufferedImage image) {
+        this.image = image;
     }
 
     public List<TextBlock> getTexts() {

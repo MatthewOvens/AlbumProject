@@ -6,13 +6,18 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.StyledEditorKit;
 
 //Should it be a View? Cause it's initializing the whole thing. How to deal with this which is an upper class?
@@ -49,8 +54,6 @@ public class Album extends JFrame { //JFrame managed to visualize the windows el
         createBody();
         createToolbar();
 
-        //Da togliere
-        addPhotoComponent("C:/Users/forna/Desktop/EIT/UPS/Uni stuff/Advanced programming/AlbumProject/src/main/resources/images/prova.png");
     }
 
     /**
@@ -76,12 +79,28 @@ public class Album extends JFrame { //JFrame managed to visualize the windows el
             public void actionPerformed(ActionEvent e) {
                 // Open a JFileChooser for importing photos
                 JFileChooser fileChooser = new JFileChooser();
+
+                // File filter that accepts image files (e.g., PNG, JPEG, GIF)
+                FileNameExtensionFilter imageFilter = new FileNameExtensionFilter("Image Files", "jpg", "jpeg", "png");
+                fileChooser.setFileFilter(imageFilter);
+
                 int returnValue = fileChooser.showOpenDialog(Album.this);
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
-                    statusBar.setText("Going to do something with the selected file (not implemented yet)");
+                    try {
+                        File selectedFile = fileChooser.getSelectedFile();
 
-                    addPhotoComponent("C:/Users/forna/Desktop/EIT/UPS/Uni stuff/Advanced programming/AlbumProject/src/main/resources/images/tramonto.png");
-
+                        // Check if the selected file has an allowed image file extension
+                        String fileName = selectedFile.getName().toLowerCase();
+                        if (fileName.endsWith(".png") || fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".gif")) {
+                            BufferedImage image = ImageIO.read(selectedFile);
+                            addPhotoComponent(image);
+                        } else {
+                            statusBar.setText("Invalid File. Please select a valid image file (PNG, JPG, JPEG, GIF).");
+                        }
+                    }
+                    catch (IOException exception) {
+                        exception.printStackTrace();
+                    }
                 }
             }
         });
@@ -94,6 +113,8 @@ public class Album extends JFrame { //JFrame managed to visualize the windows el
             @Override
             public void actionPerformed(ActionEvent e) {
                 statusBar.setText("Delete, will eventually delete a photo");
+
+
             }
         });
         fileMenu.add(delete);
@@ -160,37 +181,18 @@ public class Album extends JFrame { //JFrame managed to visualize the windows el
      * Creates the main content area (bodyPanel) of the window.
      */
     private void createBody() {
-        //Set of a Grid layout in order to resize the PhotosComponents in the right way while resizing the frame
         bodyPanel = new JPanel(new BorderLayout());
-
-        //new GridLayout(2,2,10,10)
         photoPanel = new JScrollPane();
-
-        //ViewportView cause JScrollPane has already a JViewport added
         bodyPanel.add(photoPanel, BorderLayout.CENTER);
-
-        System.out.println(bodyPanel.getWidth());
-        System.out.println(bodyPanel.getHeight());
 
         this.add(bodyPanel);
     }
 
-    private void addPhotoComponent(String image) {
+    private void addPhotoComponent(BufferedImage image) {
+        //[For later eventually] Loop over the retrived images adding the whole thing.
 
-        //Render immediately the images stored in the model
-
-        List<Image> storedImages = retriveStoredImages();
-
-        //Loop over the retrived images adding the whole thing.
-
-        PhotoComponent photoComponent2 = new PhotoComponent(image, bodyPanel.getWidth(), bodyPanel.getHeight());
-        photoPanel.setViewportView(photoComponent2);
-
-        //PhotoComponent photoComponent = new PhotoComponent("C:/Users/forna/Desktop/EIT/UPS/Uni stuff/Advanced programming/AlbumProject/src/main/resources/images/candy_shop.jpg");
-        //photoPanel.add(photoComponent);
-
-        //PhotoComponent photoComponent3 = new PhotoComponent("C:/Users/forna/Desktop/EIT/UPS/Uni stuff/Advanced programming/AlbumProject/src/main/resources/images/tramonto.png");
-        //photoPanel.add(photoComponent3);
+        PhotoComponent photoComponent = new PhotoComponent(image);
+        photoPanel.setViewportView(photoComponent);
 
     }
 

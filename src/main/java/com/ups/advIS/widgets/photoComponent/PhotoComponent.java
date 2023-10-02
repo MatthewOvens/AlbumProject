@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
+import java.nio.Buffer;
 import java.util.List;
 
 //The widget Controller, the main class
@@ -37,12 +38,12 @@ public class PhotoComponent extends JComponent {
     private boolean isFlipped = false;
 
     public PhotoComponent() {
-        //super();
 
+        //To upload a new PhotoComponent with a default image
+
+        /*
         this.setPreferredSize(new Dimension(preferredSize, preferredSize));
 
-
-        //setImage()
         setMouseListeners();
         //With a default photo?
         model.setImage("C:/Users/forna/Desktop/EIT/UPS/Uni stuff/Advanced programming/AlbumProject/src/main/resources/images/candy_shop.jpg");
@@ -52,18 +53,16 @@ public class PhotoComponent extends JComponent {
             repaint(); //Serve?
             revalidate(); //Serve?
         });
-
-        //model.addChangeListener(e -> repaint());  //Or other thing? For later to modify dinamically every object inizialized
+         */
     }
 
-    //For later
-    public PhotoComponent(String imagePathName, int width, int height) {
+    public PhotoComponent(BufferedImage image) {
 
         this.setPreferredSize(new Dimension(preferredSize, preferredSize));
 
         setMouseListeners();
         setKeyboardListeners();
-        model.setImage(imagePathName);
+        model.setImage(image);
         this.setPreferredSize(new Dimension(model.getImage().getWidth(), model.getImage().getHeight()));
 
         //To revalidate and repaint every time a new PhotoComponent is added
@@ -78,16 +77,7 @@ public class PhotoComponent extends JComponent {
         return model;
     }
 
-    /*
-    //For later
-    public void add(Image image) {
-        model.add(image);
-    }
-    */
-
     private void setMouseListeners() {
-
-        int pr = 32;
 
         this.addMouseListener(new MouseAdapter() {
 
@@ -179,19 +169,13 @@ public class PhotoComponent extends JComponent {
 
     public void setKeyboardListeners() {
 
-        int prova = 2;
-
         this.addKeyListener(new KeyAdapter() {
 
             @Override
             public void keyTyped(KeyEvent e) {
-                System.out.println("keyPressed");
-
                 if(isFlipped) {
                     model.getCurrentTextBox().addChar(e.getKeyChar());
                     repaint();
-
-                    //If don't recommendable with hashcode can be done saving specific chars here at the recognition of a special character
                 }
             }
 
@@ -199,9 +183,7 @@ public class PhotoComponent extends JComponent {
 
     }
 
-    /**
-     *
-     */
+
     public void flip() {
 
         this.isFlipped = !this.isFlipped;
@@ -222,15 +204,13 @@ public class PhotoComponent extends JComponent {
 
     }
 
-    /*
-    Hint: Your paintComponent method will have two paths through it, depending on the setting of this boolean.
-    In the default path, it will draw the background and then the image.
-    In the flipped path, it will draw the background, draw the white surface, and then draw the annotations (see below).
+    /**
+     * Paint function that start the paint of everything inside the component
      */
     @Override
     protected void paintComponent(Graphics pen) {
 
-        ui.paintPhoto(pen, this, isFlipped, Color.BLUE, Color.BLUE);
+        ui.paintPhoto(pen, this, isFlipped, Color.BLUE, Color.DARK_GRAY);
 
     }
 

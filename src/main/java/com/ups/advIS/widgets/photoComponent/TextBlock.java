@@ -53,8 +53,9 @@ public class TextBlock {
      * Drawing function of each shape. It basically draw a line between each point in the list and the previous one
      * if it's the first one of the list it draws just a single point
      * @param g
+     * @param canvasWidth
      */
-    public void draw(Graphics g, int canvasWidth) {
+    public void draw(Graphics g, int canvasWidth, int canvaHeight) {
         if (textChars.size() != 0) {
             g.setColor(color);
 
@@ -65,6 +66,9 @@ public class TextBlock {
             int currentY = y;
 
             for (Character c : textChars) {
+
+
+
                 String charString = c.toString();
                 int charWidth = fontMetrics.stringWidth(charString);
 
@@ -75,10 +79,13 @@ public class TextBlock {
                     currentY += lineHeight;
                 }
 
-                g.drawString(charString, currentX, currentY);
+                // Adding the character only if it's not exceeding the height of the drawing area
+                if (currentY < canvaHeight) {
+                    g.drawString(charString, currentX, currentY);
+                    // Update current position
+                    currentX += charWidth;
+                }
 
-                // Update current position
-                currentX += charWidth;
             }
         }
     }

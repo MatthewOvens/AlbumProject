@@ -186,12 +186,12 @@ public class PhotoComponentUI {
 
         // Draw all stored shapes
         for (TextBlock text : textBlocks) {
-            text.draw(g, canvas.getWidth());
+            text.draw(g, canvas.getWidth(), canvas.getHeight());
         }
 
         // Draw the current shape (if any)
         if (currentTextBlock != null) {
-            currentTextBlock.draw(g, canvas.getWidth());
+            currentTextBlock.draw(g, canvas.getWidth(), canvas.getHeight());
         }
 
     }

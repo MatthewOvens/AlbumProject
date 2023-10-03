@@ -31,8 +31,8 @@ public class PhotoComponent extends JComponent {
      * but you probably don't want any minimumSize or maximumSize. When your PhotoComponent is initialized,
      * and before any photo is loaded, you probably want to use some default value for its size and preferred size.
      */
-    private int size = 500; //Default value
-    private int preferredSize = 500; //Default value
+    private int size = 500; //Default value TODO to put in the model
+    private int preferredSize = 500; //Default value TODO to put in the model
 
     //Flipped state of the component
     private boolean isFlipped = false;
@@ -62,7 +62,7 @@ public class PhotoComponent extends JComponent {
 
         setMouseListeners();
         setKeyboardListeners();
-        model.setImage(image);
+        model.setImage(image); //Could have done inizializing the model here calling the eventual constructor PhotoComponentModel(image)
         this.setPreferredSize(new Dimension(model.getImage().getWidth(), model.getImage().getHeight()));
 
         //To revalidate and repaint every time a new PhotoComponent is added

@@ -69,6 +69,9 @@ public class TextBlock {
      * if it's the first one of the list it draws just a single point
      */
     public void draw(Graphics g, PhotoComponent canvas, int imageX, int imageY) {
+
+        //TODO Break points andando a capo
+
         if (textChars.size() != 0) {
 
             BufferedImage image = canvas.getModel().getImage();

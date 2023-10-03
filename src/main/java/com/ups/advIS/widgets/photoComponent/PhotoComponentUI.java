@@ -11,6 +11,14 @@ public class PhotoComponentUI {
     private int imageX;
     private int imageY;
 
+    public PhotoComponentUI() {
+
+        PhotoComponent controller = new PhotoComponent();
+
+        //Event Listeners (INPUT)
+
+    }
+
     public int getImageX() {
         return imageX;
     }
@@ -113,7 +121,7 @@ public class PhotoComponentUI {
     }
 
     /**
-     * Function to render dinamically what the user is typing
+     * Function to render dynamically what the user is typing
      */
     public void paintTextAnnotations(Graphics g, PhotoComponent canvas, Color color) {
 
@@ -121,6 +129,7 @@ public class PhotoComponentUI {
         TextBlock currentTextBlock = canvas.getModel().getCurrentTextBox();
 
         // Draw all stored shapes
+
         for (TextBlock text : textBlocks) {
             text.setColor(color);
             text.draw(g, canvas, imageX, imageY);

@@ -21,8 +21,8 @@ import java.util.List;
 public class PhotoComponent extends JComponent {
 
     //Model and View inizialization
-    private PhotoComponentModel model = new PhotoComponentModel();
-    private PhotoComponentUI ui = new PhotoComponentUI();
+    private PhotoComponentModel model;
+    private PhotoComponentUI ui;
 
     /**
      * But be sure to realize that the component may be larger or smaller than the photo it displays
@@ -60,8 +60,9 @@ public class PhotoComponent extends JComponent {
 
         this.setPreferredSize(new Dimension(preferredSize, preferredSize));
 
-        setMouseListeners();
-        setKeyboardListeners();
+        model = new PhotoComponentModel();
+        ui = new PhotoComponentUI(this);
+
         model.setImage(image); //Could have done inizializing the model here calling the eventual constructor PhotoComponentModel(image)
         this.setPreferredSize(new Dimension(model.getImage().getWidth(), model.getImage().getHeight()));
 
@@ -77,133 +78,12 @@ public class PhotoComponent extends JComponent {
         return model;
     }
 
-    /**
-     * MouseListeners implementation
-     */
-    private void setMouseListeners() {
-
-        this.addMouseListener(new MouseAdapter() {
-
-            private long lastClickTime = 0;
-            private final long doubleClickDelay = 300;
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                long currentTime = System.currentTimeMillis();
-
-                if (currentTime - lastClickTime <= doubleClickDelay) {
-                    // Double-click detected
-                    flip();
-                } else {
-                    // Single click
-                    if(isFlipped && isBehindPhoto(e.getPoint())) {
-
-                        //Eventual check for previous text boxes
-                        //Text shit
-                        TextBlock textBlock = new TextBlock(e.getX() - ui.getImageX(), e.getY() - ui.getImageY());
-                        model.setCurrentTextBox(textBlock);
-                        model.addTexts(textBlock);
-
-                        setFocusable(true);
-                        requestFocus();
-
-                    }
-
-                }
-
-                lastClickTime = currentTime;
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if(isFlipped && isBehindPhoto(e.getPoint())) {
-                    model.setCurrentShape(new Shape(Color.BLACK));
-                    model.getCurrentShape().addPoint(new Point(e.getPoint().x - ui.getImageX(), e.getPoint().y - ui.getImageY()));
-                }
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                Shape currentShape = model.getCurrentShape();
-                if(isFlipped && currentShape != null) {
-                    // Finalize the current shape when the mouse is released
-                    model.addShape(currentShape);
-                    model.setCurrentShape(null);
-                    repaint();
-                }
-            }
-
-        });
-
-        this.addMouseMotionListener(new MouseAdapter() {
-
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                Shape currentShape = model.getCurrentShape();
-
-                if(isFlipped) {
-                    if(isBehindPhoto(e.getPoint())) {
-                        // Update the current shape's endpoint while dragging to dynamically draw it
-                        if (model.getCurrentShape() != null) {
-                            model.getCurrentShape().addPoint(new Point(e.getPoint().x - ui.getImageX(), e.getPoint().y - ui.getImageY()));
-                            repaint();
-                        }
-                        else {
-                            model.setCurrentShape(new Shape(Color.BLACK));
-                            model.getCurrentShape().addPoint(new Point(e.getPoint().x - ui.getImageX(), e.getPoint().y - ui.getImageY()));
-                            repaint();
-                        }
-                    }
-                    else {
-                        if(currentShape != null) {
-                            // Finalize the current shape
-                            model.addShape(currentShape);
-                            model.setCurrentShape(null);
-                        }
-                    }
-                }
-            }
-        });
-
+    public boolean isFlipped() {
+        return isFlipped;
     }
 
-    /**
-     * KeyboardListeners implementation
-     */
-    public void setKeyboardListeners() {
-
-        this.addKeyListener(new KeyAdapter() {
-
-            @Override
-            public void keyTyped(KeyEvent e) {
-                if(isFlipped) {
-                    model.getCurrentTextBox().addChar(e.getKeyChar());
-                    repaint();
-                }
-            }
-
-        });
-
-    }
-
-    public void flip() {
-
-        this.isFlipped = !this.isFlipped;
-        this.repaint();
-
-    }
-
-    /**
-     * Function to check if the stroke is inside the photo limits or in the background
-     * @param point
-     * @return true if the point is inside the borders of the photo, false otherwise
-     */
-    public boolean isBehindPhoto(Point point) {
-        BufferedImage image = model.getImage();
-
-        return point.getX() >= ui.getImageX() && point.getX() <= ui.getImageX() + image.getWidth() &&
-                point.getY() >= ui.getImageY() && point.getY() <= ui.getImageY() + image.getHeight();
-
+    public void setFlipped(boolean flipped) {
+        isFlipped = flipped;
     }
 
     /**
@@ -211,9 +91,7 @@ public class PhotoComponent extends JComponent {
      */
     @Override
     protected void paintComponent(Graphics pen) {
-
         ui.paintPhoto(pen, this, isFlipped, Color.BLUE, Color.DARK_GRAY);
-
     }
 
 }

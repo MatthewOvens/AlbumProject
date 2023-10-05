@@ -28,7 +28,7 @@ public class Shape implements Drawable{
      * @param g
      */
     @Override
-    public void draw(Graphics g, Point scalePoint) {
+    public void draw(Graphics g, Point scalePoint) {  //TODO dovrebbe essere solo Graphic g, no?
         if (points.size() != 0) {
             g.setColor(color);
 

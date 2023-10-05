@@ -54,7 +54,6 @@ public class TextBlock {
      * Function to delete both the char of the Backspace key and the one before, so the actual char to delete
      */
     private void deleteOperation() {
-        System.out.print(textChars);
         textChars.remove(textChars.size() - 1);
 
         if(!textChars.isEmpty()) {

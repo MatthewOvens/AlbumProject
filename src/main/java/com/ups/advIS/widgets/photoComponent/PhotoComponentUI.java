@@ -2,20 +2,29 @@ package com.ups.advIS.widgets.photoComponent;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
 import java.util.List;
 
+//View + Controller
 public class PhotoComponentUI {
 
     private int imageX;
     private int imageY;
 
-    public PhotoComponentUI() {
+    PhotoComponent controller;
 
-        PhotoComponent controller = new PhotoComponent();
+    public PhotoComponentUI(PhotoComponent controller) {
+
+        this.controller = controller;
 
         //Event Listeners (INPUT)
+        setMouseListeners();
+        setKeyboardListeners();
 
     }
 
@@ -25,6 +34,133 @@ public class PhotoComponentUI {
 
     public int getImageY() {
         return imageY;
+    }
+
+    /**
+     * MouseListeners implementation
+     */
+    private void setMouseListeners() {
+
+        controller.addMouseListener(new MouseAdapter() {
+
+            private long lastClickTime = 0;
+            private final long doubleClickDelay = 300;
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                long currentTime = System.currentTimeMillis();
+
+                if (currentTime - lastClickTime <= doubleClickDelay) {
+                    // Double-click detected
+                    flip();
+                } else {
+                    // Single click
+                    if(controller.isFlipped() && isBehindPhoto(e.getPoint())) {
+
+                        //Eventual check for previous text boxes
+                        //Text shit
+                        TextBlock textBlock = new TextBlock(e.getX() - imageX, e.getY() - imageY);
+                        controller.getModel().setCurrentTextBox(textBlock);
+                        controller.getModel().addTexts(textBlock);
+
+                        controller.setFocusable(true);
+                        controller.requestFocus();
+
+                    }
+
+                }
+
+                lastClickTime = currentTime;
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if(controller.isFlipped() && isBehindPhoto(e.getPoint())) {
+                    controller.getModel().setCurrentShape(new Shape(Color.BLACK));
+                    controller.getModel().getCurrentShape().addPoint(new Point(e.getPoint().x - imageX, e.getPoint().y - imageY));
+                }
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                Shape currentShape = controller.getModel().getCurrentShape();
+                if(controller.isFlipped() && currentShape != null) {
+                    // Finalize the current shape when the mouse is released
+                    controller.getModel().addShape(currentShape);
+                    controller.getModel().setCurrentShape(null);
+                    controller.repaint(); //TODO spostare?
+                }
+            }
+
+        });
+
+        controller.addMouseMotionListener(new MouseAdapter() {
+
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                Shape currentShape = controller.getModel().getCurrentShape();
+
+                if(controller.isFlipped()) {
+                    if(isBehindPhoto(e.getPoint())) {
+                        // Update the current shape's endpoint while dragging to dynamically draw it
+                        if (controller.getModel().getCurrentShape() != null) {
+                            controller.getModel().getCurrentShape().addPoint(new Point(e.getPoint().x - imageX, e.getPoint().y - imageY));
+                            controller.repaint(); //TODO spostare in shape?
+                        }
+                        else {
+                            controller.getModel().setCurrentShape(new Shape(Color.BLACK));
+                            controller.getModel().getCurrentShape().addPoint(new Point(e.getPoint().x - imageX, e.getPoint().y - imageY));
+                            controller.repaint();   //TODO spostare in shape?
+                        }
+                    }
+                    else {
+                        if(currentShape != null) {
+                            // Finalize the current shape
+                            controller.getModel().addShape(currentShape);
+                            controller.getModel().setCurrentShape(null);
+                        }
+                    }
+                }
+            }
+        });
+
+    }
+
+    /**
+     * KeyboardListeners implementation
+     */
+    public void setKeyboardListeners() {
+
+        controller.addKeyListener(new KeyAdapter() {
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if(controller.isFlipped()) {
+                    controller.getModel().getCurrentTextBox().addChar(e.getKeyChar());
+                    controller.repaint(); //TODO spostare?
+                }
+            }
+
+        });
+
+    }
+
+    public void flip() {
+        controller.setFlipped(!controller.isFlipped());
+        controller.repaint(); //TODO spostare?
+    }
+
+    /**
+     * Function to check if the stroke is inside the photo limits or in the background
+     * @param point
+     * @return true if the point is inside the borders of the photo, false otherwise
+     */
+    public boolean isBehindPhoto(Point point) {
+        BufferedImage image = controller.getModel().getImage();
+
+        return point.getX() >= imageX && point.getX() <= imageX + image.getWidth() &&
+                point.getY() >= imageY && point.getY() <= imageY + image.getHeight();
+
     }
 
     public void paintPhoto(Graphics g, PhotoComponent canvas, Boolean isFlipped, Color drawingsColor, Color textsColor) {

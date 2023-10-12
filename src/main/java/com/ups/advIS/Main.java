@@ -7,8 +7,7 @@ public class Main {
     public static void main(String[] args) {
 
         Album album = new Album("Album Project");
-        album.setVisible(true);
-        album.pack();
+        album.show();
 
     }
 

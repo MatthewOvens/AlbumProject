@@ -159,9 +159,12 @@ public class PhotoComponentUI {
      */
     public void showEditToolbar() {
 
-        //this.editToolbar.setVisible(controller.isFlipped());
-
-        System.out.println(controller.isFlipped());
+        if(controller.isFlipped()) {
+            this.controller.showEditToolbar(true);
+        }
+        else {
+            this.controller.showEditToolbar(false);
+        }
 
     }
 

@@ -43,13 +43,16 @@ public class Album { //JFrame managed to visualize the windows elements
         albumUI.pack();
     }
 
+    public void showEditToolbar(boolean isVisible) {
+        albumUI.setIsEditToolbarVisible(isVisible);
+    }
+
     /**
      * Adding of the PhotoComponent and visualization of it
      */
     public void addPhotoComponent(BufferedImage image) {
-        photoComponent = new PhotoComponent(image);
+        photoComponent = new PhotoComponent(image, this);
         albumUI.photoPanel.setViewportView(photoComponent);
-        albumUI.setIsEditToolbarVisible(true);
         show();
     }
 
@@ -57,7 +60,7 @@ public class Album { //JFrame managed to visualize the windows elements
         //Clean of the body
         photoComponent = null;
         albumUI.photoPanel.setViewportView(null);
-        albumUI.editToolbar = null;
+        showEditToolbar(false);
     }
 
 }

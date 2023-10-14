@@ -65,7 +65,9 @@ public class AlbumUI extends JFrame{
 
         JButton selectModeButton = new JButton("Select Mode");
         JButton drawModeButton = new JButton("Draw Mode");
-        JButton colorButton = new JButton("Change Color");
+        //JColorChooser colorChooser = new JColorChooser();
+        JButton colorButton = new JButton();
+        colorButton.setBackground(Color.BLACK);
 
         selectModeButton.addActionListener(e -> {
             // Add logic to switch to select mode
@@ -85,6 +87,7 @@ public class AlbumUI extends JFrame{
             if (selectedColor != null) {
                 // Add logic to change the drawing color to the selected color
                 // For example, set the selectedColor as the current drawing color
+                System.out.println(selectedColor);
             }
         });
 

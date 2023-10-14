@@ -1,5 +1,7 @@
 package com.ups.advIS.widgets.photoComponent;
 
+import com.ups.advIS.album.Album;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -24,6 +26,8 @@ public class PhotoComponent extends JComponent {
     private PhotoComponentModel model;
     private PhotoComponentUI ui;
 
+    private Album album;
+
     //Flipped state of the component
     private boolean isFlipped = false;
 
@@ -46,7 +50,10 @@ public class PhotoComponent extends JComponent {
          */
     }
 
-    public PhotoComponent(BufferedImage image) {
+    public PhotoComponent(BufferedImage image, Album album) {
+
+        this.album = album;
+
         model = new PhotoComponentModel(image);
         ui = new PhotoComponentUI(this);
 
@@ -68,6 +75,11 @@ public class PhotoComponent extends JComponent {
 
     public void setFlipped(boolean flipped) {
         isFlipped = flipped;
+        repaint();
+    }
+
+    public void showEditToolbar(boolean isVisible) {
+        this.album.showEditToolbar(isVisible);
     }
 
     //Functions to manage the Model

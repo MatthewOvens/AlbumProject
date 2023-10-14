@@ -74,12 +74,49 @@ public class PhotoComponent extends JComponent {
         return model.getImage();
     }
 
+    //Functions to manage the Model
+    public void setCurrentShape() {
+        model.setCurrentShape(new Shape(Color.BLACK));
+    }
+    public Shape getCurrentShape() {
+        return model.getCurrentShape();
+    }
+    public List<Shape> getShapes() {
+        return model.getShapes();
+    }
+    public void setCurrentTextBox(TextBlock textBlock) {
+        model.setCurrentTextBox(textBlock);
+    }
+    public TextBlock getCurrentTextBox() {
+        return model.getCurrentTextBox();
+    }
+    public List<TextBlock> getTexts() {
+        return model.getTexts();
+    }
+    public void addPointInCurrentShape(Point p) {
+        model.getCurrentShape().addPoint(p);
+        this.repaint();
+    }
+    public void addCharInCurrentTextBox(char character) {
+        if(this.isFlipped()) {
+            this.model.getCurrentTextBox().addChar(character);
+            this.repaint();
+        }
+    }
+    public void addTexts(TextBlock textBlock) {
+        model.addTexts(textBlock);
+    }
+    public void finalizeShape(Shape currentShape) {
+        model.addShape(currentShape);
+        model.setCurrentShape(null);
+    }
+
     /**
      * Paint function that start the paint of everything inside the component
      */
     @Override
     protected void paintComponent(Graphics pen) {
-        ui.paintPhoto(pen, this, isFlipped, Color.BLUE, Color.DARK_GRAY);
+        ui.paintPhoto(pen, isFlipped, Color.BLUE, Color.DARK_GRAY);
     }
 
 }

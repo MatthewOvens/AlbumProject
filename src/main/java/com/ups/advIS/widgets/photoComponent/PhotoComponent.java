@@ -24,9 +24,6 @@ public class PhotoComponent extends JComponent {
     private PhotoComponentModel model;
     private PhotoComponentUI ui;
 
-    private int size = 500; //Default value TODO to put in the model
-    private int preferredSize = 500; //Default value TODO to put in the model
-
     //Flipped state of the component
     private boolean isFlipped = false;
 
@@ -50,9 +47,6 @@ public class PhotoComponent extends JComponent {
     }
 
     public PhotoComponent(BufferedImage image) {
-
-        //this.setPreferredSize(new Dimension(preferredSize, preferredSize));
-
         model = new PhotoComponentModel(image);
         ui = new PhotoComponentUI(this);
 

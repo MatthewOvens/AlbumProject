@@ -27,17 +27,10 @@ public class PhotoComponentUI {
         this.image = this.controller.getImage();
 
         this.controller.setPreferredSize(new Dimension(this.image.getWidth(), this.image.getHeight()));
+
         //Event Listeners (INPUT)
         setMouseListeners();
         setKeyboardListeners();
-    }
-
-    public int getImageX() {
-        return imageX;
-    }
-
-    public int getImageY() {
-        return imageY;
     }
 
     /**

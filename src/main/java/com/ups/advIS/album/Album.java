@@ -41,7 +41,7 @@ public class Album { //JFrame managed to visualize the windows elements
 
     public void show() {
         albumUI.setVisible(true);
-        albumUI.pack();
+        //albumUI.pack();
     }
 
     /**
@@ -50,12 +50,12 @@ public class Album { //JFrame managed to visualize the windows elements
     public void addPhotoComponent(BufferedImage image) {
         photoComponent = new PhotoComponent(image);
         albumUI.photoPanel.setViewportView(photoComponent);
-
+        show();
     }
 
     public void deleteCurrentPhoto() {
         //Clean of the body
-        this.photoComponent = null;
+        photoComponent = null;
         albumUI.photoPanel.setViewportView(null);
     }
 

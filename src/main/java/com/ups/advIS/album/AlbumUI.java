@@ -31,22 +31,78 @@ public class AlbumUI extends JFrame{
     public JToggleButton placesButton;
     public JToggleButton schoolButton;
 
-    JPanel statusPanel;
-    JPanel bodyPanel;
-    JScrollPane photoPanel;
+    public JToolBar editToolbar;
+
+    public JPanel statusPanel;
+    public JPanel bodyPanel;
+    public JScrollPane photoPanel;
 
     private Album albumController;
 
     public AlbumUI(Album controller, String title) {
         super(title); //Create a frame with the title passed
 
-        this.albumController = controller;
+        albumController = controller;
 
         setFrame();
         createStatusBar();
         createMenuBar();
         createBody();
         createToolbar();
+        createEditToolbar();
+
+    }
+
+    public void setIsEditToolbarVisible(boolean isVisible) {
+        editToolbar.setVisible(isVisible);
+    }
+
+    public void createEditToolbar() {
+
+        editToolbar = new JToolBar();
+        editToolbar.setBackground(Color.decode("#DEDAD9"));
+        editToolbar.setFloatable(false);
+
+        JButton selectModeButton = new JButton("Select Mode");
+        JButton drawModeButton = new JButton("Draw Mode");
+        JButton colorButton = new JButton("Change Color");
+
+        selectModeButton.addActionListener(e -> {
+            // Add logic to switch to select mode
+            // For example, set a flag or call a method to handle select mode
+            // You can also change the appearance of the buttons to indicate the current mode.
+        });
+
+        drawModeButton.addActionListener(e -> {
+            // Add logic to switch to draw mode
+            // For example, set a flag or call a method to handle draw mode
+            // You can also change the appearance of the buttons to indicate the current mode.
+        });
+
+        colorButton.addActionListener(e -> {
+            // Show a color chooser dialog to select a color
+            Color selectedColor = JColorChooser.showDialog(null, "Select a Color", Color.BLACK);
+            if (selectedColor != null) {
+                // Add logic to change the drawing color to the selected color
+                // For example, set the selectedColor as the current drawing color
+            }
+        });
+
+        editToolbar.add(Box.createHorizontalGlue());
+        editToolbar.add(selectModeButton);
+        editToolbar.addSeparator();
+        editToolbar.add(drawModeButton);
+        editToolbar.addSeparator();
+        editToolbar.add(colorButton);
+        editToolbar.addSeparator();
+
+        System.out.println("Arrivato");
+        System.out.println(editToolbar);
+
+        this.add(this.editToolbar, BorderLayout.NORTH);
+
+        //Initially always hidden
+        editToolbar.setVisible(false);
 
     }
 
@@ -167,11 +223,11 @@ public class AlbumUI extends JFrame{
      * Configures the main frame's size, minimum size, and location.
      */
     private void setFrame() {
-        this.setSize(frameSize);
-        this.setPreferredSize(frameSize);
+        setSize(frameSize);
+        setPreferredSize(frameSize);
         // Set a minimum size for the frame to ensure components are not too compressed
-        this.setMinimumSize(minimumFrameSize);
-        this.setLocationRelativeTo(null); //To position the frame at the center of the screen
+        setMinimumSize(minimumFrameSize);
+        setLocationRelativeTo(null); //To position the frame at the center of the screen
     }
 
     /**

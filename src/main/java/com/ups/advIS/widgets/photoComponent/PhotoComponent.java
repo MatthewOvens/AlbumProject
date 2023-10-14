@@ -70,11 +70,10 @@ public class PhotoComponent extends JComponent {
         isFlipped = flipped;
     }
 
+    //Functions to manage the Model
     public BufferedImage getImage() {
         return model.getImage();
     }
-
-    //Functions to manage the Model
     public void setCurrentShape() {
         model.setCurrentShape(new Shape(Color.BLACK));
     }
@@ -99,7 +98,7 @@ public class PhotoComponent extends JComponent {
     }
     public void addCharInCurrentTextBox(char character) {
         if(this.isFlipped()) {
-            this.model.getCurrentTextBox().addChar(character);
+            model.getCurrentTextBox().addChar(character);
             this.repaint();
         }
     }

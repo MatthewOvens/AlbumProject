@@ -1,6 +1,7 @@
 package com.ups.advIS.widgets.photoComponent;
 
 import javax.swing.*;
+import javax.swing.plaf.ToolBarUI;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -26,6 +27,7 @@ public class PhotoComponentUI {
 
         this.image = this.controller.getImage();
 
+        //TODO make it functioning !!!
         this.controller.setPreferredSize(new Dimension(this.image.getWidth(), this.image.getHeight()));
 
         //Event Listeners (INPUT)
@@ -50,6 +52,7 @@ public class PhotoComponentUI {
                 if (currentTime - lastClickTime <= doubleClickDelay) {
                     // Double-click detected
                     flip();
+                    showEditToolbar();
                 } else {
                     // Single click
                     if(controller.isFlipped() && isBehindPhoto(e.getPoint())) {
@@ -151,6 +154,18 @@ public class PhotoComponentUI {
 
     }
 
+    /**
+     * Hide and show the edit toolbar each time the user double click over the image
+     */
+    public void showEditToolbar() {
+
+        //this.editToolbar.setVisible(controller.isFlipped());
+
+        System.out.println(controller.isFlipped());
+
+    }
+
+
     public void paintPhoto(Graphics g, Boolean isFlipped, Color drawingsColor, Color textsColor) {
 
         paintBackground(g);
@@ -166,9 +181,9 @@ public class PhotoComponentUI {
 
         //Useful to avoid code duplication
         if(isFlipped) {
-            g.setColor(Color.WHITE);
-            g.fillRect(imageX, imageY, image.getWidth(), image.getHeight());
-            g.drawRect(imageX, imageY, image.getWidth(), image.getHeight());
+            g.drawImage(image, imageX, imageY, image.getWidth(), image.getHeight(), null);
+            //g.fillRect(imageX, imageY, image.getWidth(), image.getHeight());
+            //g.drawRect(imageX, imageY, image.getWidth(), image.getHeight());
 
             paintDrawnAnnotations(g, drawingsColor);
             paintTextAnnotations(g, textsColor);

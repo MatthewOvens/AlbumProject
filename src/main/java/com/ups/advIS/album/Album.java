@@ -23,7 +23,6 @@ import javax.swing.text.StyledEditorKit;
 //Should it be a View? Cause it's initializing the whole thing. How to deal with this which is an upper class?
 public class Album { //JFrame managed to visualize the windows elements
 
-
     private AlbumModel albumModel;
     private AlbumUI albumUI;
 
@@ -41,7 +40,7 @@ public class Album { //JFrame managed to visualize the windows elements
 
     public void show() {
         albumUI.setVisible(true);
-        //albumUI.pack();
+        albumUI.pack();
     }
 
     /**
@@ -50,6 +49,7 @@ public class Album { //JFrame managed to visualize the windows elements
     public void addPhotoComponent(BufferedImage image) {
         photoComponent = new PhotoComponent(image);
         albumUI.photoPanel.setViewportView(photoComponent);
+        albumUI.setIsEditToolbarVisible(true);
         show();
     }
 
@@ -57,9 +57,8 @@ public class Album { //JFrame managed to visualize the windows elements
         //Clean of the body
         photoComponent = null;
         albumUI.photoPanel.setViewportView(null);
+        albumUI.editToolbar = null;
     }
-
-
 
 }
 

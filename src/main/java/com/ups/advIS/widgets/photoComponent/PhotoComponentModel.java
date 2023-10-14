@@ -21,6 +21,10 @@ public class PhotoComponentModel {
     private TextBlock currentTextBox = null;
     private List<ChangeListener> listeners = new ArrayList<>();
 
+    public PhotoComponentModel(BufferedImage image) {
+        this.image = image;
+    }
+
     public BufferedImage getImage() {
         return image;
     }

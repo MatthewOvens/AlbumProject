@@ -44,9 +44,10 @@ public class Album { //JFrame managed to visualize the windows elements
         albumUI.pack();
     }
 
+    /**
+     * Adding of the PhotoComponent and visualization of it
+     */
     public void addPhotoComponent(BufferedImage image) {
-        //[For later eventually] Loop over the retrived images adding the whole thing.
-
         photoComponent = new PhotoComponent(image);
         albumUI.photoPanel.setViewportView(photoComponent);
 

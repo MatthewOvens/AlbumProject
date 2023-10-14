@@ -16,16 +16,20 @@ public class PhotoComponentUI {
     private int imageX;
     private int imageY;
 
+    private BufferedImage image;
+
     PhotoComponent controller;
 
     public PhotoComponentUI(PhotoComponent controller) {
 
         this.controller = controller;
 
+        this.image = this.controller.getImage();
+
+        this.controller.setPreferredSize(new Dimension(this.image.getWidth(), this.image.getHeight()));
         //Event Listeners (INPUT)
         setMouseListeners();
         setKeyboardListeners();
-
     }
 
     public int getImageX() {

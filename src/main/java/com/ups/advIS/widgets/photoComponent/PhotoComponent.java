@@ -24,13 +24,6 @@ public class PhotoComponent extends JComponent {
     private PhotoComponentModel model;
     private PhotoComponentUI ui;
 
-    /**
-     * But be sure to realize that the component may be larger or smaller than the photo it displays
-     * (because the user may resize the window, for example).
-     * Your component should have a size and a preferredSize that are the size of the photo itself,
-     * but you probably don't want any minimumSize or maximumSize. When your PhotoComponent is initialized,
-     * and before any photo is loaded, you probably want to use some default value for its size and preferred size.
-     */
     private int size = 500; //Default value TODO to put in the model
     private int preferredSize = 500; //Default value TODO to put in the model
 
@@ -58,13 +51,10 @@ public class PhotoComponent extends JComponent {
 
     public PhotoComponent(BufferedImage image) {
 
-        this.setPreferredSize(new Dimension(preferredSize, preferredSize));
+        //this.setPreferredSize(new Dimension(preferredSize, preferredSize));
 
-        model = new PhotoComponentModel();
+        model = new PhotoComponentModel(image);
         ui = new PhotoComponentUI(this);
-
-        model.setImage(image); //Could have done inizializing the model here calling the eventual constructor PhotoComponentModel(image)
-        this.setPreferredSize(new Dimension(model.getImage().getWidth(), model.getImage().getHeight()));
 
         //To revalidate and repaint every time a new PhotoComponent is added
         model.addChangeListener(e -> {
@@ -84,6 +74,10 @@ public class PhotoComponent extends JComponent {
 
     public void setFlipped(boolean flipped) {
         isFlipped = flipped;
+    }
+
+    public BufferedImage getImage() {
+        return model.getImage();
     }
 
     /**

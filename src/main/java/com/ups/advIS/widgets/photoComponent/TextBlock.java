@@ -64,8 +64,7 @@ public class TextBlock {
 
 
     /**
-     * Drawing function of each shape. It basically draw a line between each point in the list and the previous one
-     * if it's the first one of the list it draws just a single point
+     * Drawing function of each TextBox.
      */
     public void draw(Graphics g, PhotoComponent canvas, int imageX, int imageY) {
 

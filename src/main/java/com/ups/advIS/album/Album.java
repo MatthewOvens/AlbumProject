@@ -51,6 +51,10 @@ public class Album { //JFrame managed to visualize the windows elements
      * Adding of the PhotoComponent and visualization of it
      */
     public void addPhotoComponent(BufferedImage image) {
+
+        //For now the image get override
+        deleteCurrentPhoto();
+
         photoComponent = new PhotoComponent(image, this);
         albumUI.photoPanel.setViewportView(photoComponent);
         show();

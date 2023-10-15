@@ -42,11 +42,6 @@ public class PhotoComponent extends JComponent {
         //With a default photo?
         model.setImage("C:/Users/forna/Desktop/EIT/UPS/Uni stuff/Advanced programming/AlbumProject/src/main/resources/images/candy_shop.jpg");
 
-        //Why we need it?
-        model.addChangeListener(e -> {
-            repaint(); //Serve?
-            revalidate(); //Serve?
-        });
          */
     }
 
@@ -57,7 +52,7 @@ public class PhotoComponent extends JComponent {
         model = new PhotoComponentModel(image);
         ui = new PhotoComponentUI(this);
 
-        //To revalidate and repaint every time a new PhotoComponent is added
+        //To revalidate and repaint every time the listeners get notified
         model.addChangeListener(e -> {
             repaint();
             revalidate();
@@ -75,7 +70,6 @@ public class PhotoComponent extends JComponent {
 
     public void setFlipped(boolean flipped) {
         isFlipped = flipped;
-        repaint();
     }
 
     public void showEditToolbar(boolean isVisible) {
@@ -106,12 +100,12 @@ public class PhotoComponent extends JComponent {
     }
     public void addPointInCurrentShape(Point p) {
         model.getCurrentShape().addPoint(p);
-        this.repaint();
+        model.notifyChangeListeners();
     }
     public void addCharInCurrentTextBox(char character) {
         if(this.isFlipped()) {
             model.getCurrentTextBox().addChar(character);
-            this.repaint();
+            model.notifyChangeListeners();
         }
     }
     public void addTexts(TextBlock textBlock) {

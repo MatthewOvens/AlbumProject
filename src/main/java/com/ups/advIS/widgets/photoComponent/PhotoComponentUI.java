@@ -138,7 +138,6 @@ public class PhotoComponentUI {
 
     public void flip() {
         controller.setFlipped(!controller.isFlipped());
-        controller.repaint(); //TODO spostare?
     }
 
     /**
@@ -181,23 +180,14 @@ public class PhotoComponentUI {
         imageX = (parentComponentWidth - image.getWidth()) / 2;
         imageY = (parentComponentHeight - image.getHeight()) / 2;
 
+        g.drawImage(image, imageX, imageY, image.getWidth(), image.getHeight(), null);
 
-        //Useful to avoid code duplication
         if(isFlipped) {
-            g.drawImage(image, imageX, imageY, image.getWidth(), image.getHeight(), null);
-            //g.fillRect(imageX, imageY, image.getWidth(), image.getHeight());
-            //g.drawRect(imageX, imageY, image.getWidth(), image.getHeight());
-
             paintDrawnAnnotations(g, drawingsColor);
             paintTextAnnotations(g, textsColor);
-
-            g.dispose();
         }
-        else {
-            g.drawImage(image, imageX, imageY, image.getWidth(), image.getHeight(), null);
 
-            g.dispose();
-        }
+        g.dispose();
     }
 
     /**

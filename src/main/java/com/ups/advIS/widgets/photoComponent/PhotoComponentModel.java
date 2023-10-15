@@ -19,7 +19,7 @@ public class PhotoComponentModel {
     private List<TextBlock> texts = new ArrayList<>();
     private Shape currentShape = null;
     private TextBlock currentTextBox = null;
-    private List<ChangeListener> listeners = new ArrayList<>();
+    private List<ChangeListener> changeListeners = new ArrayList<>();
 
     public PhotoComponentModel(BufferedImage image) {
         this.image = image;
@@ -66,11 +66,11 @@ public class PhotoComponentModel {
     }
 
     public void addChangeListener(ChangeListener listener) {
-        listeners.add(listener);
+        changeListeners.add(listener);
     }
 
-    private void notifyChangeListeners() {
-        Iterator var1 = this.listeners.iterator();
+    public void notifyChangeListeners() {
+        Iterator var1 = this.changeListeners.iterator();
 
         while (var1.hasNext()) {
             ChangeListener listener = (ChangeListener) var1.next();

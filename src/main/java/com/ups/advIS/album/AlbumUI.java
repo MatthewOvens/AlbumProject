@@ -1,5 +1,6 @@
 package com.ups.advIS.album;
 
+import com.ups.advIS.editToolbar.EditToolbar;
 import com.ups.advIS.widgets.photoComponent.PhotoComponent;
 
 import javax.imageio.ImageIO;
@@ -31,7 +32,8 @@ public class AlbumUI extends JFrame{
     public JToggleButton placesButton;
     public JToggleButton schoolButton;
 
-    public JToolBar editToolbar;
+    public EditToolbar editToolbar;
+    public PhotoComponent photoComponent;
 
     public JPanel statusPanel;
     public JPanel bodyPanel;
@@ -53,60 +55,9 @@ public class AlbumUI extends JFrame{
 
     }
 
-    public void setIsEditToolbarVisible(boolean isVisible) {
-        editToolbar.setVisible(isVisible);
-    }
-
     public void createEditToolbar() {
-
-        editToolbar = new JToolBar();
-        editToolbar.setBackground(Color.decode("#DEDAD9"));
-        editToolbar.setFloatable(false);
-
-        JButton selectModeButton = new JButton("Select Mode");
-        JButton drawModeButton = new JButton("Draw Mode");
-        //JColorChooser colorChooser = new JColorChooser();
-        JButton colorButton = new JButton();
-        colorButton.setBackground(Color.BLACK);
-
-        selectModeButton.addActionListener(e -> {
-            // Add logic to switch to select mode
-            // For example, set a flag or call a method to handle select mode
-            // You can also change the appearance of the buttons to indicate the current mode.
-        });
-
-        drawModeButton.addActionListener(e -> {
-            // Add logic to switch to draw mode
-            // For example, set a flag or call a method to handle draw mode
-            // You can also change the appearance of the buttons to indicate the current mode.
-        });
-
-        colorButton.addActionListener(e -> {
-            // Show a color chooser dialog to select a color
-            Color selectedColor = JColorChooser.showDialog(null, "Select a Color", Color.BLACK);
-            if (selectedColor != null) {
-                // Add logic to change the drawing color to the selected color
-                // For example, set the selectedColor as the current drawing color
-                System.out.println(selectedColor);
-            }
-        });
-
-        editToolbar.add(Box.createHorizontalGlue());
-        editToolbar.add(selectModeButton);
-        editToolbar.addSeparator();
-        editToolbar.add(drawModeButton);
-        editToolbar.addSeparator();
-        editToolbar.add(colorButton);
-        editToolbar.addSeparator();
-
-        System.out.println("Arrivato");
-        System.out.println(editToolbar);
-
-        this.add(this.editToolbar, BorderLayout.NORTH);
-
-        //Initially always hidden
-        editToolbar.setVisible(false);
-
+        editToolbar = new EditToolbar();
+        this.add(editToolbar.getUi(), BorderLayout.NORTH);
     }
 
     /**

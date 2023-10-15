@@ -74,14 +74,6 @@ public class PhotoComponentUI {
             }
 
             @Override
-            public void mousePressed(MouseEvent e) {
-                if(controller.isFlipped() && isBehindPhoto(e.getPoint())) {
-                    controller.setCurrentShape();
-                    controller.addPointInCurrentShape(new Point(e.getPoint().x - imageX, e.getPoint().y - imageY));
-                }
-            }
-
-            @Override
             public void mouseReleased(MouseEvent e) {
                 Shape currentShape = controller.getCurrentShape();
                 if(controller.isFlipped() && currentShape != null) {
@@ -101,14 +93,11 @@ public class PhotoComponentUI {
                 if(controller.isFlipped()) {
                     if(isBehindPhoto(e.getPoint())) {
                         // Update the current shape's endpoint while dragging to dynamically draw it
-                        if (controller.getCurrentShape() != null) {
-                            controller.addPointInCurrentShape(new Point(e.getPoint().x - imageX, e.getPoint().y - imageY));
-
-                        }
-                        else {
+                        if(controller.getCurrentShape() == null) {
                             controller.setCurrentShape();
-                            controller.addPointInCurrentShape(new Point(e.getPoint().x - imageX, e.getPoint().y - imageY));
                         }
+
+                        controller.addPointInCurrentShape(new Point(e.getPoint().x - imageX, e.getPoint().y - imageY));
                     }
                     else {
                         if(currentShape != null) {
@@ -168,7 +157,7 @@ public class PhotoComponentUI {
     }
 
 
-    public void paintPhoto(Graphics g, Boolean isFlipped, Color drawingsColor, Color textsColor) {
+    public void paintPhoto(Graphics g, Boolean isFlipped, Color annotationsColor) {
 
         paintBackground(g);
 
@@ -183,8 +172,8 @@ public class PhotoComponentUI {
         g.drawImage(image, imageX, imageY, image.getWidth(), image.getHeight(), null);
 
         if(isFlipped) {
-            paintDrawnAnnotations(g, drawingsColor);
-            paintTextAnnotations(g, textsColor);
+            paintDrawnAnnotations(g);
+            paintTextAnnotations(g);
         }
 
         g.dispose();
@@ -227,7 +216,7 @@ public class PhotoComponentUI {
     /**
      * Function to draw free-hand drawings inside the canva
      */
-    public void paintDrawnAnnotations(Graphics g, Color color) {
+    public void paintDrawnAnnotations(Graphics g) {
 
         List<Shape> shapes = this.controller.getShapes();
         Shape currentShape = this.controller.getCurrentShape();
@@ -239,14 +228,11 @@ public class PhotoComponentUI {
 
         // Draw all stored shapes
         for (Shape shape : shapes) {
-            shape.setColor(color);
-
             shape.draw(g2d, scalePoint);
         }
 
         // Draw the current shape (if any)
         if (currentShape != null) {
-            currentShape.setColor(color);
             currentShape.draw(g2d, scalePoint);
         }
 
@@ -255,7 +241,7 @@ public class PhotoComponentUI {
     /**
      * Function to render dynamically what the user is typing
      */
-    public void paintTextAnnotations(Graphics g, Color color) {
+    public void paintTextAnnotations(Graphics g) {
 
         List<TextBlock> textBlocks = this.controller.getTexts();
         TextBlock currentTextBlock = this.controller.getCurrentTextBox();
@@ -263,7 +249,6 @@ public class PhotoComponentUI {
         // Draw all stored shapes
 
         for (TextBlock text : textBlocks) {
-            text.setColor(color);
             text.draw(g, this.controller, imageX, imageY);
         }
 

@@ -21,6 +21,11 @@ public class PhotoComponentModel {
     private TextBlock currentTextBox = null;
     private List<ChangeListener> changeListeners = new ArrayList<>();
 
+    private Shape selectedShape;
+    private TextBlock selectedTextBox;
+
+    private Color drawingAnnotationColor = Color.BLACK;
+
     public PhotoComponentModel(BufferedImage image) {
         this.image = image;
     }
@@ -67,6 +72,30 @@ public class PhotoComponentModel {
 
     public void addChangeListener(ChangeListener listener) {
         changeListeners.add(listener);
+    }
+
+    public Shape getSelectedShape() {
+        return selectedShape;
+    }
+
+    public void setSelectedShape(Shape selectedShape) {
+        this.selectedShape = selectedShape;
+    }
+
+    public TextBlock getSelectedTextBox() {
+        return selectedTextBox;
+    }
+
+    public void setSelectedTextBox(TextBlock selectedTextBox) {
+        this.selectedTextBox = selectedTextBox;
+    }
+
+    public Color getDrawingAnnotationsColor() {
+        return drawingAnnotationColor;
+    }
+
+    public void setDrawingAnnotationColor(Color drawingColor) {
+        this.drawingAnnotationColor = drawingColor;
     }
 
     public void notifyChangeListeners() {

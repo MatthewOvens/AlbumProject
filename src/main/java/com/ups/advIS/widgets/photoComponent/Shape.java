@@ -22,6 +22,10 @@ public class Shape implements Drawable{
         this.color = color;
     }
 
+    public Color getColor() {
+        return color;
+    }
+
     /**
      * Drawing function of each shape. It basically draw a line between each point in the list and the previous one
      * if it's the first one of the list it draws just a single point

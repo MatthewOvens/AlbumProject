@@ -1,13 +1,11 @@
 package com.ups.advIS.widgets.photoComponent;
 
 import com.ups.advIS.album.Album;
+import com.ups.advIS.editToolbar.EditToolbar;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
-import java.nio.Buffer;
 import java.util.List;
 
 //The widget Controller, the main class
@@ -26,7 +24,8 @@ public class PhotoComponent extends JComponent {
     private PhotoComponentModel model;
     private PhotoComponentUI ui;
 
-    private Album album;
+    //Reference to the toolbar in order to communicate easier
+    private EditToolbar editToolbar;
 
     //Flipped state of the component
     private boolean isFlipped = false;
@@ -45,9 +44,9 @@ public class PhotoComponent extends JComponent {
          */
     }
 
-    public PhotoComponent(BufferedImage image, Album album) {
+    public PhotoComponent(BufferedImage image, EditToolbar editToolbar) {
 
-        this.album = album;
+        this.editToolbar = editToolbar;
 
         model = new PhotoComponentModel(image);
         ui = new PhotoComponentUI(this);
@@ -70,10 +69,11 @@ public class PhotoComponent extends JComponent {
 
     public void setFlipped(boolean flipped) {
         isFlipped = flipped;
+        model.notifyChangeListeners();
     }
 
     public void showEditToolbar(boolean isVisible) {
-        this.album.showEditToolbar(isVisible);
+        editToolbar.getUi().setVisible(isVisible);
     }
 
     //Functions to manage the Model
@@ -81,7 +81,7 @@ public class PhotoComponent extends JComponent {
         return model.getImage();
     }
     public void setCurrentShape() {
-        model.setCurrentShape(new Shape(Color.BLACK));
+        model.setCurrentShape(new Shape(model.getDrawingAnnotationsColor()));
     }
     public Shape getCurrentShape() {
         return model.getCurrentShape();
@@ -90,6 +90,7 @@ public class PhotoComponent extends JComponent {
         return model.getShapes();
     }
     public void setCurrentTextBox(TextBlock textBlock) {
+        textBlock.setColor(model.getDrawingAnnotationsColor());
         model.setCurrentTextBox(textBlock);
     }
     public TextBlock getCurrentTextBox() {
@@ -121,7 +122,7 @@ public class PhotoComponent extends JComponent {
      */
     @Override
     protected void paintComponent(Graphics pen) {
-        ui.paintPhoto(pen, isFlipped, Color.BLUE, Color.DARK_GRAY);
+        ui.paintPhoto(pen, isFlipped, model.getDrawingAnnotationsColor());
     }
 
 }

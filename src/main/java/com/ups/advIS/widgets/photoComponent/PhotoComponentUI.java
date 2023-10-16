@@ -182,70 +182,65 @@ public class PhotoComponentUI {
 
             //If no TextBoxes have been selected check of the Shapes
             //Checking if clicked near a Shape and eventually select it
-            if(!gotTextSelection) {
+            final int SELECTION_RANGE = 5;
+            boolean gotShapeSelection = false;
 
-                final int SELECTION_RANGE = 5;
+            //For each shape control if the click happened close to the shape and eventually select it
+            for (Shape shape : shapes) {
 
-                boolean gotShapeSelection = false;
+                shape.setIsSelected(false); //Delete of the eventual previous selected textBoxes
 
-                //For each shape control if the click happened close to the shape and eventually select it
-                for (Shape shape : shapes) {
+                if(!gotShapeSelection && !gotTextSelection) {
+                    List<Line2D> lines = shape.lines;
+                    for (Line2D line: lines) {
 
-                    shape.setIsSelected(false); //Delete of the eventual previous selected textBoxes
+                        Point lineStart = new Point((int)line.getX1(), (int)line.getY1());
+                        Point lineEnd = new Point((int)line.getX2(), (int)line.getY2());
 
-                    if(!gotShapeSelection) {
-                        List<Line2D> lines = shape.lines;
-                        for (Line2D line: lines) {
+                        double distance = distancePointToLineSegment(lineStart, lineEnd, clickPoint);
 
-                            double distance = distancePointToLineSegment(line.getX1(), line.getY1(), line.getX2(), line.getY2(), clickPoint.x, clickPoint.y);
-
-                            if (distance <= SELECTION_RANGE) {
-                                gotShapeSelection = true;
-                            }
-
+                        if (distance <= SELECTION_RANGE) {
+                            gotShapeSelection = true;
                         }
-                        if(gotShapeSelection) {
-                            System.out.println("OHI");
-                            controller.selectAnnotation(shape);
-                        }
+
                     }
-
+                    if(gotShapeSelection) {
+                        controller.selectAnnotation(shape);
+                    }
                 }
+
             }
 
             controller.getModel().notifyChangeListeners();
-
-        }
-        else if(controller.isFlipped()) { //When clicking in the background
 
         }
     }
 
     /**
      * Help from chatGPT: "Distance point-segment in a java function"
-     * params: x1,y1 -> line start point / x2,y2 -> line end point / x0,y0 -> click coordinates
+     * params: lineStart.x,lineStart.y -> line start point / lineEnd.x,lineEnd.y -> line end point / clickPoint.x,clickPoint.y -> click coordinates
      */
-    private static double distancePointToLineSegment(double x1, double y1, double x2, double y2, double x0, double y0) {
+    private double distancePointToLineSegment(Point lineStart, Point lineEnd, Point clickPoint) {
         // Calculate the squared length of the line segment
-        double length2 = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1);
+        double length2 = (lineEnd.x - lineStart.x) * (lineEnd.x - lineStart.x) + (lineEnd.y - lineStart.y) * (lineEnd.y - lineStart.y);
 
         // Check if the line segment is of zero length
         if (length2 == 0) {
-            return Math.sqrt((x0 - x1) * (x0 - x1) + (y0 - y1) * (y0 - y1));
+            return Math.sqrt((clickPoint.x - lineStart.x) * (clickPoint.x - lineStart.x) + (clickPoint.y - lineStart.y) * (clickPoint.y - lineStart.y));
         }
 
         // Calculate the parameter along the line where the closest point is
-        double t = ((x0 - x1) * (x2 - x1) + (y0 - y1) * (y2 - y1)) / length2;
+        double t = ((clickPoint.x - lineStart.x) * (lineEnd.x - lineStart.x) + (clickPoint.y - lineStart.y) * (lineEnd.y - lineStart.y)) / length2;
 
         // Clamp t to ensure the closest point lies within the line segment
         t = Math.max(0, Math.min(1, t));
 
         // Calculate the coordinates of the closest point on the line segment
-        double xClosest = x1 + t * (x2 - x1);
-        double yClosest = y1 + t * (y2 - y1);
+        double xClosest = lineStart.x + t * (lineEnd.x - lineStart.x);
+        double yClosest = lineStart.y + t * (lineEnd.y - lineStart.y);
 
         // Calculate the distance between the closest point and the given point
-        double distance = Math.sqrt((x0 - xClosest) * (x0 - xClosest) + (y0 - yClosest) * (y0 - yClosest));
+        double distance = Math.sqrt((clickPoint.x - xClosest) * (clickPoint.x - xClosest) + (clickPoint.y - yClosest) * (clickPoint.y - yClosest));
 
         return distance;
     }

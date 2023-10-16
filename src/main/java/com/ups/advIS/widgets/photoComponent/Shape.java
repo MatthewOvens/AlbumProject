@@ -32,7 +32,6 @@ public class Shape extends Annotation{
         if (points.size() >= 2) {
 
             if(isSelected()) {
-                System.out.println("AAAAAHI");
                 g.setColor(SELECTING_COLOR);
                 // Set the stroke to create thicker borders
                 g.setStroke(new BasicStroke(3));

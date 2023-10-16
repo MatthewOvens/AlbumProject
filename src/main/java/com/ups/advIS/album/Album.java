@@ -26,7 +26,7 @@ public class Album { //JFrame managed to visualize the windows elements
         albumUI = new AlbumUI(this, title);
 
         try {
-            File file = new File("C:/Users/forna/Desktop/EIT/UPS/Uni stuff/Advanced programming/AlbumProject/src/main/resources/icons/placesIcon.png");
+            File file = new File("C:/Users/forna/Pictures/Screenshots/Immagine 2022-01-27 174756.png");
             if (file.exists()) {
                 BufferedImage image = ImageIO.read(file);
                 addPhotoComponent(image);

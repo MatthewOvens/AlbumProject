@@ -7,6 +7,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
 import java.util.List;
@@ -49,30 +50,20 @@ public class PhotoComponentUI {
             public void mouseClicked(MouseEvent e) {
                 long currentTime = System.currentTimeMillis();
 
-                if(controller.getModel().getActiveMode() == "draw") {
-                    System.out.println("draw mode");
-                }
-                else if(controller.getModel().getActiveMode() == "select") {
-                    System.out.println("select mode");
-                }
-
-
                 if (currentTime - lastClickTime <= doubleClickDelay) {
                     // Double-click detected
                     flip();
                     showEditToolbar();
                 } else {
                     // Single click
-                    if(controller.isFlipped() && isBehindPhoto(e.getPoint())) {
 
-                        //Eventual check for previous text boxes
-                        TextBlock textBlock = new TextBlock(e.getX() - imageX, e.getY() - imageY);
-                        controller.setCurrentTextBox(textBlock);
-                        controller.addTexts(textBlock);
-
-                        controller.setFocusable(true);
-                        controller.requestFocus();
-
+                    if(controller.getModel().getActiveMode() == "draw") {
+                        System.out.println("draw mode");
+                        manageDrawing(e);
+                    }
+                    else if(controller.getModel().getActiveMode() == "select") {
+                        System.out.println("select mode");
+                        manageSelecting(e);
                     }
 
                 }
@@ -130,6 +121,133 @@ public class PhotoComponentUI {
             }
         });
 
+    }
+
+    /**
+     * Function that manage the behaviour of the PhotoComponent while in the drawing mode
+     */
+    private void manageDrawing(MouseEvent e) {
+        if(controller.isFlipped() && isBehindPhoto(e.getPoint())) {
+
+            //Eventual check for previous text boxes
+            TextBlock textBlock = new TextBlock(e.getX() - imageX, e.getY() - imageY);
+            controller.setCurrentTextBox(textBlock);
+            controller.addTexts(textBlock);
+
+            controller.setFocusable(true);
+            controller.requestFocus();
+
+        }
+    }
+
+    /**
+     * Function that manage the behaviour of the PhotoComponent while in the selecting mode
+     */
+    private void manageSelecting(MouseEvent e) {
+        if(controller.isFlipped()) {
+
+            List<TextBlock> textBlocks = this.controller.getTexts();
+            List<Shape> shapes = this.controller.getShapes();
+
+            Point clickPoint = new Point(e.getPoint().x, e.getPoint().y);
+
+            boolean gotTextSelection = false;
+
+            //Checking if clicked in a TextBox and eventually select it
+            for (TextBlock text : textBlocks) {
+
+                text.setIsSelected(false); //Delete of the eventual previous selected textBoxes
+
+                if(isBehindPhoto(e.getPoint())) {
+                    int x = text.getX();
+                    int y = text.getY();
+                    int width = text.getWidth();
+                    int height = text.getHeight();
+
+                    boolean isInsideHorizontally = (clickPoint.x > imageX + x) && (clickPoint.x < imageX + x + width);
+                    boolean isInsideVertically = (clickPoint.y > imageY + y - 13) && (clickPoint.y < imageY + y + height);
+
+                    if(isInsideHorizontally && isInsideVertically) {
+                        //TODO gestire le textBox che si sovrappongono?
+
+                        if(!gotTextSelection) {
+                            controller.selectAnnotation(text);
+                            gotTextSelection = true;
+                        }
+
+                    }
+                }
+
+            }
+
+            //If no TextBoxes have been selected check of the Shapes
+            //Checking if clicked near a Shape and eventually select it
+            if(!gotTextSelection) {
+
+                final int SELECTION_RANGE = 5;
+
+                boolean gotShapeSelection = false;
+
+                //For each shape control if the click happened close to the shape and eventually select it
+                for (Shape shape : shapes) {
+
+                    shape.setIsSelected(false); //Delete of the eventual previous selected textBoxes
+
+                    if(!gotShapeSelection) {
+                        List<Line2D> lines = shape.lines;
+                        for (Line2D line: lines) {
+
+                            double distance = distancePointToLineSegment(line.getX1(), line.getY1(), line.getX2(), line.getY2(), clickPoint.x, clickPoint.y);
+
+                            if (distance <= SELECTION_RANGE) {
+                                gotShapeSelection = true;
+                            }
+
+                        }
+                        if(gotShapeSelection) {
+                            System.out.println("OHI");
+                            controller.selectAnnotation(shape);
+                        }
+                    }
+
+                }
+            }
+
+            controller.getModel().notifyChangeListeners();
+
+        }
+        else if(controller.isFlipped()) { //When clicking in the background
+
+        }
+    }
+
+    /**
+     * Help from chatGPT: "Distance point-segment in a java function"
+     * params: x1,y1 -> line start point / x2,y2 -> line end point / x0,y0 -> click coordinates
+     */
+    private static double distancePointToLineSegment(double x1, double y1, double x2, double y2, double x0, double y0) {
+        // Calculate the squared length of the line segment
+        double length2 = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1);
+
+        // Check if the line segment is of zero length
+        if (length2 == 0) {
+            return Math.sqrt((x0 - x1) * (x0 - x1) + (y0 - y1) * (y0 - y1));
+        }
+
+        // Calculate the parameter along the line where the closest point is
+        double t = ((x0 - x1) * (x2 - x1) + (y0 - y1) * (y2 - y1)) / length2;
+
+        // Clamp t to ensure the closest point lies within the line segment
+        t = Math.max(0, Math.min(1, t));
+
+        // Calculate the coordinates of the closest point on the line segment
+        double xClosest = x1 + t * (x2 - x1);
+        double yClosest = y1 + t * (y2 - y1);
+
+        // Calculate the distance between the closest point and the given point
+        double distance = Math.sqrt((x0 - xClosest) * (x0 - xClosest) + (y0 - yClosest) * (y0 - yClosest));
+
+        return distance;
     }
 
     public void flip() {
@@ -253,13 +371,12 @@ public class PhotoComponentUI {
         List<TextBlock> textBlocks = this.controller.getTexts();
         TextBlock currentTextBlock = this.controller.getCurrentTextBox();
 
-        // Draw all stored shapes
-
+        // Draw all stored textBoxes
         for (TextBlock text : textBlocks) {
             text.draw(g, this.controller, imageX, imageY);
         }
 
-        // Draw the current shape (if any)
+        // Draw the current textbox (if any)
         if (currentTextBlock != null) {
             currentTextBlock.draw(g, this.controller, imageX, imageY);
         }

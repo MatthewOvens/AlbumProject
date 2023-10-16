@@ -21,7 +21,7 @@ public class PhotoComponentModel {
     private TextBlock currentTextBox = null;
     private List<ChangeListener> changeListeners = new ArrayList<>();
 
-    private String activeMode = "select";
+    private String activeMode = "draw";  //Draw by deafault as the initial value
 
     private Annotation selectedAnnotation;
 

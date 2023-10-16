@@ -23,10 +23,6 @@ public class TextBlock extends Annotation {
         this.y = y;
     }
 
-    public List<Character> getTextChart() {
-        return textChars;
-    }
-
     public void addChar(char character) {
         this.textChars.add(character);
     }
@@ -45,6 +41,22 @@ public class TextBlock extends Annotation {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 
     /**
@@ -131,9 +143,9 @@ public class TextBlock extends Annotation {
             if(isSelected()) {
                 Graphics2D g2d = (Graphics2D) g;
                 // Draw the rectangle that goes around the whole textBox based on the calculated width and height
-                g.setColor(Color.RED);
+                g.setColor(SELECTING_COLOR);
                 // Set the stroke to create thicker borders
-                g2d.setStroke(new BasicStroke(2));
+                g2d.setStroke(new BasicStroke(1));
 
                 g2d.drawRect(x + imageX - 2, y + imageY - 13, width + 7, height + 5);
             }

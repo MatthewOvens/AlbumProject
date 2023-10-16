@@ -4,8 +4,9 @@ import java.awt.*;
 
 public class Annotation {
 
+    final static Color SELECTING_COLOR = Color.RED;
     private Color color;
-    private boolean isSelected = true; //False by default
+    private boolean isSelected = false; //False by default
 
     public Color getColor() {
         return color;

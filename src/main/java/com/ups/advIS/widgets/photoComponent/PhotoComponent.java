@@ -49,6 +49,10 @@ public class PhotoComponent extends JComponent {
         model.notifyChangeListeners();
     }
 
+    public void selectAnnotation(Annotation annotation) {
+        annotation.setIsSelected(true);
+    }
+
     public void showEditToolbar(boolean isVisible) {
         editToolbar.getUi().setVisible(isVisible);
     }

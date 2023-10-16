@@ -49,6 +49,14 @@ public class PhotoComponentUI {
             public void mouseClicked(MouseEvent e) {
                 long currentTime = System.currentTimeMillis();
 
+                if(controller.getModel().getActiveMode() == "draw") {
+                    System.out.println("draw mode");
+                }
+                else if(controller.getModel().getActiveMode() == "select") {
+                    System.out.println("select mode");
+                }
+
+
                 if (currentTime - lastClickTime <= doubleClickDelay) {
                     // Double-click detected
                     flip();
@@ -58,7 +66,6 @@ public class PhotoComponentUI {
                     if(controller.isFlipped() && isBehindPhoto(e.getPoint())) {
 
                         //Eventual check for previous text boxes
-                        //Text shit
                         TextBlock textBlock = new TextBlock(e.getX() - imageX, e.getY() - imageY);
                         controller.setCurrentTextBox(textBlock);
                         controller.addTexts(textBlock);

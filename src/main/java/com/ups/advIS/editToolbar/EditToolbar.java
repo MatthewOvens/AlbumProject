@@ -28,10 +28,11 @@ public class EditToolbar extends JComponent {
     }
 
     public void setDrawingColor(Color color) {
-
-        System.out.println(color);
         photoComponent.getModel().setDrawingAnnotationColor(color);
+    }
 
+    public void setSelectMode(String mode) {
+        photoComponent.getModel().setActiveMode(mode);
     }
 
 

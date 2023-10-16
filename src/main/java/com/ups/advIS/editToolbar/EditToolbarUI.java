@@ -2,11 +2,14 @@ package com.ups.advIS.editToolbar;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 public class EditToolbarUI extends JToolBar {
     private JButton selectModeButton;
     private JButton drawModeButton;
     private JButton colorButton;
+    private ButtonGroup buttonsGroup = new ButtonGroup();
 
     private Color color = Color.BLACK; //default black as a color
 
@@ -21,22 +24,31 @@ public class EditToolbarUI extends JToolBar {
 
         //Group of buttons to manage the two "radio buttons"
 
-        JButton selectModeButton = new JButton("Select Mode");
-        JButton drawModeButton = new JButton("Draw Mode");
+        JToggleButton selectModeButton = new JToggleButton("select"); //Add icon
+        JToggleButton drawModeButton = new JToggleButton("draw"); //Add icon
         //JColorChooser colorChooser = new JColorChooser();
         JButton colorButton = new JButton();
         colorButton.setBackground(color);
 
-        selectModeButton.addActionListener(e -> {
-            // Add logic to switch to select mode
-            // For example, set a flag or call a method to handle select mode
-            // You can also change the appearance of the buttons to indicate the current mode.
+        buttonsGroup.add(selectModeButton);
+        buttonsGroup.add(drawModeButton);
+
+        selectModeButton.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    controller.setSelectMode("select");
+                }
+            }
         });
 
-        drawModeButton.addActionListener(e -> {
-            // Add logic to switch to draw mode
-            // For example, set a flag or call a method to handle draw mode
-            // You can also change the appearance of the buttons to indicate the current mode.
+        drawModeButton.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    controller.setSelectMode("draw");
+                }
+            }
         });
 
         colorButton.addActionListener(e -> {

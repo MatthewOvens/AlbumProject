@@ -18,24 +18,8 @@ public class PhotoComponent extends JComponent {
     //Reference to the toolbar in order to communicate easier
     private EditToolbar editToolbar;
 
-    private Shape selectedAnnotation;
-
     //Flipped state of the component
     private boolean isFlipped = false;
-
-    public PhotoComponent() {
-
-        //To upload a new PhotoComponent with a default image
-
-        /*
-        this.setPreferredSize(new Dimension(preferredSize, preferredSize));
-
-        setMouseListeners();
-        //With a default photo?
-        model.setImage("C:/Users/forna/Desktop/EIT/UPS/Uni stuff/Advanced programming/AlbumProject/src/main/resources/images/candy_shop.jpg");
-
-         */
-    }
 
     public PhotoComponent(BufferedImage image, EditToolbar editToolbar) {
 

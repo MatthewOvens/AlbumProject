@@ -21,8 +21,9 @@ public class PhotoComponentModel {
     private TextBlock currentTextBox = null;
     private List<ChangeListener> changeListeners = new ArrayList<>();
 
-    private Shape selectedShape;
-    private TextBlock selectedTextBox;
+    private String activeMode = "select";
+
+    private Annotation selectedAnnotation;
 
     private Color drawingAnnotationColor = Color.BLACK;
 
@@ -74,20 +75,12 @@ public class PhotoComponentModel {
         changeListeners.add(listener);
     }
 
-    public Shape getSelectedShape() {
-        return selectedShape;
+    public Annotation getSelectedAnnotation() {
+        return selectedAnnotation;
     }
 
-    public void setSelectedShape(Shape selectedShape) {
-        this.selectedShape = selectedShape;
-    }
-
-    public TextBlock getSelectedTextBox() {
-        return selectedTextBox;
-    }
-
-    public void setSelectedTextBox(TextBlock selectedTextBox) {
-        this.selectedTextBox = selectedTextBox;
+    public void setSelectedAnnotation(Annotation selectedAnnotation) {
+        this.selectedAnnotation = selectedAnnotation;
     }
 
     public Color getDrawingAnnotationsColor() {
@@ -96,6 +89,14 @@ public class PhotoComponentModel {
 
     public void setDrawingAnnotationColor(Color drawingColor) {
         this.drawingAnnotationColor = drawingColor;
+    }
+
+    public String getActiveMode() {
+        return activeMode;
+    }
+
+    public void setActiveMode(String mode) {
+        this.activeMode = mode;
     }
 
     public void notifyChangeListeners() {

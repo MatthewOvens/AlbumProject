@@ -9,15 +9,6 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 
 //The widget Controller, the main class
-
-/**
- * How will you model this widget? What goes into the abstract concept of this annotated photo widget?
- * What sort of state will it have? Where should all that go?
- * You will probably need to keep at least a reference to the image on disk, a boolean indicating whether it is in its “flipped”
- * state or not, plus a representation of any annotations on the photo (described later).
- *
- * How should the photo widget be drawn? How should it react to mouse and keyboard events? Where should these go?
- */
 public class PhotoComponent extends JComponent {
 
     //Model and View inizialization
@@ -26,6 +17,8 @@ public class PhotoComponent extends JComponent {
 
     //Reference to the toolbar in order to communicate easier
     private EditToolbar editToolbar;
+
+    private Shape selectedAnnotation;
 
     //Flipped state of the component
     private boolean isFlipped = false;

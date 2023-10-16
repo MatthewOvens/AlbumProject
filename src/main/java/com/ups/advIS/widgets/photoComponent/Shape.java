@@ -4,26 +4,16 @@ import java.util.List;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Shape implements Drawable{
+public class Shape extends Annotation{
 
     List<Point> points = new ArrayList<>();
-    private Color color;
 
     public Shape(Color color) {
-        this.color = color;
+        setColor(color);
     }
 
     public void addPoint(Point point) {
         this.points.add(point);
-    }
-
-    @Override
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    public Color getColor() {
-        return color;
     }
 
     /**
@@ -31,10 +21,9 @@ public class Shape implements Drawable{
      * if it's the first one of the list it draws just a single point
      * @param g
      */
-    @Override
     public void draw(Graphics g, Point scalePoint) {
         if (points.size() >= 2 ) {
-            g.setColor(color);
+            g.setColor(getColor());
 
             for (Point point : points) {
 

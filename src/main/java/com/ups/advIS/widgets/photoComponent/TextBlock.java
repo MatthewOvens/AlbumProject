@@ -6,7 +6,7 @@ import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TextBlock {
+public class TextBlock extends Annotation {
 
     //Characters stored in the TextBlock
     List<Character> textChars = new ArrayList<>();
@@ -15,15 +15,10 @@ public class TextBlock {
     private int x;
     private int y;
     private final int lineHeight = 15;
-    private Color color;
 
     public TextBlock(int x, int y) {
         this.x = x;
         this.y = y;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
     }
 
     public List<Character> getTextChart() {
@@ -74,7 +69,7 @@ public class TextBlock {
 
             BufferedImage image = canvas.getModel().getImage();
 
-            g.setColor(color);
+            g.setColor(getColor());
 
             FontMetrics fontMetrics = g.getFontMetrics(); // Get font metrics for text measurements
 

@@ -1,7 +1,5 @@
 package com.ups.advIS.widgets.photoComponent;
 
-import javax.swing.*;
-import javax.swing.plaf.ToolBarUI;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -9,18 +7,17 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
-import java.util.Iterator;
 import java.util.List;
 
 //View + Controller
 public class PhotoComponentUI {
 
-    //Checking if clicked near a Shape and eventually select it
     private final int SELECTION_RANGE = 5;
 
     private int imageX;
     private int imageY;
 
+    //Flag used to manage the annotation dragging
     private boolean isDraggable = false;
 
     private BufferedImage image;
@@ -60,16 +57,12 @@ public class PhotoComponentUI {
                     showEditToolbar();
                 } else {
                     // Single click
-
                     if(controller.getModel().getActiveMode() == "draw") {
-                        System.out.println("draw mode");
                         manageTextBoxDrawing(e);
                     }
                     else if(controller.getModel().getActiveMode() == "select") {
-                        System.out.println("select mode");
                         manageSelecting(e);
                     }
-
                 }
 
                 lastClickTime = currentTime;
@@ -82,16 +75,10 @@ public class PhotoComponentUI {
                     // Finalize the current shape when the mouse is released
                     controller.finalizeShape(currentShape);
                 }
-
-                if(controller.getSelectedAnnotation() != null) {
-                    controller.selectAnnotation(null);
-                }
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-
-                System.out.println("mousePressed");
 
                 Annotation selectedAnnotation = controller.getSelectedAnnotation();
 
@@ -113,10 +100,10 @@ public class PhotoComponentUI {
                         }
 
                     }
-                    else if(selectedAnnotation instanceof TextBlock) {
+                    else if(selectedAnnotation instanceof TextBox) {
 
                         //Check if it is inside the box
-                        if(isInsideTextBox((TextBlock)selectedAnnotation, e.getPoint())) {
+                        if(isInsideTextBox((TextBox)selectedAnnotation, e.getPoint())) {
                             controller.setInitialDragPoint(e.getPoint());
                             isDraggable = true;
                         }
@@ -133,7 +120,7 @@ public class PhotoComponentUI {
 
             @Override
             public void mouseDragged(MouseEvent e) {
-                if(controller.isFlipped() && isBehindPhoto(e.getPoint())) {  //TODO isBehindPhoto in the model and controller
+                if(controller.isFlipped() && isBehindPhoto(e.getPoint())) {
 
                     if(controller.getModel().getActiveMode() == "draw") {
                         manageShapesDrawing(e);
@@ -167,9 +154,9 @@ public class PhotoComponentUI {
     private void manageTextBoxDrawing(MouseEvent e) {
         if(controller.isFlipped() && isBehindPhoto(e.getPoint())) {
 
-            TextBlock textBlock = new TextBlock(e.getX() - imageX, e.getY() - imageY);
-            controller.setCurrentTextBox(textBlock);
-            controller.addTexts(textBlock);
+            TextBox textBox = new TextBox(e.getX() - imageX, e.getY() - imageY);
+            controller.setCurrentTextBox(textBox);
+            controller.addTexts(textBox);
 
             controller.setFocusable(true);
             controller.requestFocus();
@@ -204,7 +191,7 @@ public class PhotoComponentUI {
     private void manageSelecting(MouseEvent e) {
         if(controller.isFlipped()) {
 
-            List<TextBlock> textBlocks = this.controller.getTexts();
+            List<TextBox> textBoxes = this.controller.getTexts();
             List<Shape> shapes = this.controller.getShapes();
 
             Point clickPoint = new Point(e.getPoint().x, e.getPoint().y);
@@ -212,7 +199,7 @@ public class PhotoComponentUI {
             boolean gotTextSelection = false;
 
             //Checking if clicked in a TextBox and eventually select it
-            for (TextBlock text : textBlocks) {
+            for (TextBox text : textBoxes) {
 
                 text.setIsSelected(false); //Delete of the eventual previous selected textBoxes
 
@@ -281,34 +268,30 @@ public class PhotoComponentUI {
 
                     // Update the Shapes' position based on the mouse movement
                     for (int i = 0; i < selectedShape.getPoints().size(); i++) {
-                        selectedShape.getPoints().get(i).x = initialPoints.get(i).x + xOffset;
-                        selectedShape.getPoints().get(i).y = initialPoints.get(i).y + yOffset;
+                        Point newPoint = new Point(initialPoints.get(i).x + xOffset, initialPoints.get(i).y + yOffset);
+                        selectedShape.getPoints().get(i).setLocation(newPoint);
                     }
 
-                    // Repaint the canvas or component to reflect the new TextBlock position
+                    // Repaint the canvas or component to reflect the new TextBox position
                     controller.getModel().notifyChangeListeners();
 
                 }
 
             }
-            else if(selectedAnnotation instanceof TextBlock) {
+            else if(selectedAnnotation instanceof TextBox) {
 
-                TextBlock selectedTextBox = (TextBlock)selectedAnnotation;
+                TextBox selectedTextBox = (TextBox)selectedAnnotation;
 
                 if(isDraggable) {
 
-                    //Point clickScaledPoint = new Point(e.getX() - imageX, e.getY() - imageY);
-
                     int xOffset = e.getX() - controller.getInitialDragPoint().x;
                     int yOffset = e.getY() - controller.getInitialDragPoint().y;
-
-                    //controller.setInitialDragPoint(new Point(xOffset, yOffset));
 
                     // Update the TextBox's position based on the mouse movement
                     selectedTextBox.setX(controller.getInitialDragPoint().x + xOffset - imageX);
                     selectedTextBox.setY(controller.getInitialDragPoint().y + yOffset - imageY);
 
-                    // Repaint the canvas or component to reflect the new TextBlock position
+                    // Repaint the canvas or component to reflect the new TextBox position
                     controller.getModel().notifyChangeListeners();
 
                 }
@@ -319,8 +302,7 @@ public class PhotoComponentUI {
     /**
      * Boolean function that is going to detect if the cursor is inside the area of the selected TextBox
      */
-    //TODO move to its class
-    private boolean isInsideTextBox(TextBlock textBox, Point clickPoint) {
+    private boolean isInsideTextBox(TextBox textBox, Point clickPoint) {
 
         int x = textBox.getX();
         int y = textBox.getY();
@@ -500,17 +482,17 @@ public class PhotoComponentUI {
      */
     public void paintTextAnnotations(Graphics g) {
 
-        List<TextBlock> textBlocks = this.controller.getTexts();
-        TextBlock currentTextBlock = this.controller.getCurrentTextBox();
+        List<TextBox> textBoxes = this.controller.getTexts();
+        TextBox currentTextBox = this.controller.getCurrentTextBox();
 
         // Draw all stored textBoxes
-        for (TextBlock text : textBlocks) {
+        for (TextBox text : textBoxes) {
             text.draw(g, this.controller, imageX, imageY);
         }
 
         // Draw the current textbox (if any)
-        if (currentTextBlock != null) {
-            currentTextBlock.draw(g, this.controller, imageX, imageY);
+        if (currentTextBox != null) {
+            currentTextBox.draw(g, this.controller, imageX, imageY);
         }
 
     }

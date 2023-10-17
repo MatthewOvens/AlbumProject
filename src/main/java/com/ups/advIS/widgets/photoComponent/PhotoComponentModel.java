@@ -1,12 +1,9 @@
 package com.ups.advIS.widgets.photoComponent;
 
-import javax.imageio.ImageIO;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -15,17 +12,14 @@ public class PhotoComponentModel {
 
     private BufferedImage image;
 
-
     private List<Shape> shapes = new ArrayList<>();
-    private List<TextBlock> texts = new ArrayList<>();
+    private List<TextBox> texts = new ArrayList<>();
     private Shape currentShape = null;
-    private TextBlock currentTextBox = null;
+    private TextBox currentTextBox = null;
     private List<ChangeListener> changeListeners = new ArrayList<>();
 
     private String activeMode = "draw";  //Draw by deafault as the initial value
-
     private Annotation selectedAnnotation;
-
     private Color drawingAnnotationColor = Color.BLACK;  //Black by default
 
     public PhotoComponentModel(BufferedImage image) {
@@ -33,29 +27,23 @@ public class PhotoComponentModel {
     }
 
 
-
-
     public BufferedImage getImage() {
         return image;
     }
 
-    public void setImage(BufferedImage image) {
-        this.image = image;
-    }
-
-    public List<TextBlock> getTexts() {
+    public List<TextBox> getTexts() {
         return texts;
     }
 
-    public void addTexts(TextBlock textBlock) {
-        this.texts.add(textBlock);
+    public void addTexts(TextBox textBox) {
+        this.texts.add(textBox);
     }
 
-    public TextBlock getCurrentTextBox() {
+    public TextBox getCurrentTextBox() {
         return currentTextBox;
     }
 
-    public void setCurrentTextBox(TextBlock currentTextBox) {
+    public void setCurrentTextBox(TextBox currentTextBox) {
         this.currentTextBox = currentTextBox;
     }
 

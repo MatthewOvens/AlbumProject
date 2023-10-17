@@ -6,11 +6,9 @@ import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TextBlock extends Annotation {
+public class TextBox extends Annotation {
 
-    //TODO Rename this in TextBox !!!!!!!!!!!!
-
-    //Characters stored in the TextBlock
+    //Characters stored in the TextBox
     List<Character> textChars = new ArrayList<>();
 
     //Coordinates of the insertion point
@@ -20,7 +18,7 @@ public class TextBlock extends Annotation {
     private int width;
     private int height;
 
-    public TextBlock(int x, int y) {
+    public TextBox(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -49,16 +47,8 @@ public class TextBlock extends Annotation {
         return width;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
     public int getHeight() {
         return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
     }
 
     /**
@@ -78,8 +68,6 @@ public class TextBlock extends Annotation {
      * Drawing function of each TextBox.
      */
     public void draw(Graphics g, PhotoComponent canvas, int imageX, int imageY) {
-
-        //TODO Break points andando a capo (FORSE)
 
         if (textChars.size() != 0) {
 

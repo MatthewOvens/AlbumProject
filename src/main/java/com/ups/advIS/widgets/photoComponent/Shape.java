@@ -45,6 +45,8 @@ public class Shape extends Annotation{
                 g.setStroke(new BasicStroke(1));
             }
 
+            lines.clear();
+
             for (Point point : points) {
 
                 int x = point.x + scalePoint.x;

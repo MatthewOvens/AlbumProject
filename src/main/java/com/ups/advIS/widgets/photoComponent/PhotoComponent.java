@@ -1,6 +1,5 @@
 package com.ups.advIS.widgets.photoComponent;
 
-import com.ups.advIS.album.Album;
 import com.ups.advIS.editToolbar.EditToolbar;
 
 import javax.swing.*;
@@ -105,14 +104,14 @@ public class PhotoComponent extends JComponent {
     public List<Shape> getShapes() {
         return model.getShapes();
     }
-    public void setCurrentTextBox(TextBlock textBlock) {
-        textBlock.setColor(model.getDrawingAnnotationsColor());
-        model.setCurrentTextBox(textBlock);
+    public void setCurrentTextBox(TextBox textBox) {
+        textBox.setColor(model.getDrawingAnnotationsColor());
+        model.setCurrentTextBox(textBox);
     }
-    public TextBlock getCurrentTextBox() {
+    public TextBox getCurrentTextBox() {
         return model.getCurrentTextBox();
     }
-    public List<TextBlock> getTexts() {
+    public List<TextBox> getTexts() {
         return model.getTexts();
     }
     public void addPointInCurrentShape(Point p) {
@@ -125,16 +124,12 @@ public class PhotoComponent extends JComponent {
             model.notifyChangeListeners();
         }
     }
-    public void addTexts(TextBlock textBlock) {
-        model.addTexts(textBlock);
+    public void addTexts(TextBox textBox) {
+        model.addTexts(textBox);
     }
     public void finalizeShape(Shape currentShape) {
         model.addShape(currentShape);
         model.setCurrentShape(null);
-    }
-
-    public void setInitialMovementPoint(Point initialPoint) {
-
     }
 
     /**

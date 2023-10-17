@@ -6,14 +6,13 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 public class EditToolbarUI extends JToolBar {
-    private JButton selectModeButton;
-    private JButton drawModeButton;
-    private JButton colorButton;
-    private ButtonGroup buttonsGroup = new ButtonGroup();
 
     private Color color = Color.BLACK; //default black as a color
 
     EditToolbar controller;
+
+    //Group of buttons to manage the two "radio buttons"
+    private ButtonGroup buttonsGroup = new ButtonGroup();
 
     public EditToolbarUI(EditToolbar controller) {
 
@@ -22,16 +21,15 @@ public class EditToolbarUI extends JToolBar {
         this.setBackground(Color.decode("#DEDAD9"));
         this.setFloatable(false);
 
-        //Group of buttons to manage the two "radio buttons"
-
         JToggleButton selectModeButton = new JToggleButton("select"); //Add icon
         JToggleButton drawModeButton = new JToggleButton("draw"); //Add icon
-        //JColorChooser colorChooser = new JColorChooser();
         JButton colorButton = new JButton();
         colorButton.setBackground(color);
 
         buttonsGroup.add(selectModeButton);
         buttonsGroup.add(drawModeButton);
+
+        buttonsGroup.setSelected(drawModeButton.getModel(), true);
 
         selectModeButton.addItemListener(new ItemListener() {
             @Override
@@ -55,14 +53,11 @@ public class EditToolbarUI extends JToolBar {
             // Show a color chooser dialog to select a color
             Color selectedColor = JColorChooser.showDialog(null, "Select Color", color);
             if (selectedColor != null) {
-                // Add logic to change the drawing color to the selected color
-                // For example, set the selectedColor as the current drawing color
-                System.out.println(selectedColor);
                 colorButton.setBackground(selectedColor);
                 controller.setDrawingColor(selectedColor);
 
                 //Has to change the color of a selected shape in case it is in selected mode
-                //controller.setCurrentShapeColor();
+                controller.setCurrentAnnotationColor(selectedColor);
             }
         });
 

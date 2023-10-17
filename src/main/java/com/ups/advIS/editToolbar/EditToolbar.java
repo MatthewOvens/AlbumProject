@@ -35,5 +35,12 @@ public class EditToolbar extends JComponent {
         photoComponent.getModel().setActiveMode(mode);
     }
 
+    public void setCurrentAnnotationColor(Color selectedColor) {
+        if(photoComponent.getSelectedAnnotation() != null) {
+            photoComponent.getSelectedAnnotation().setColor(selectedColor);
+            photoComponent.getModel().notifyChangeListeners();
+        }
+    }
+
 
 }

@@ -33,7 +33,6 @@ public class AlbumUI extends JFrame{
     public JToggleButton schoolButton;
 
     public EditToolbar editToolbar;
-    public PhotoComponent photoComponent;
 
     public JPanel statusPanel;
     public JPanel bodyPanel;
@@ -42,7 +41,7 @@ public class AlbumUI extends JFrame{
     private Album albumController;
 
     public AlbumUI(Album controller, String title) {
-        super(title); //Create a frame with the title passed
+        super(title);
 
         albumController = controller;
 

@@ -1,6 +1,5 @@
 package com.ups.advIS.album;
 
-import com.ups.advIS.editToolbar.EditToolbar;
 import com.ups.advIS.widgets.photoComponent.PhotoComponent;
 
 import javax.imageio.ImageIO;
@@ -8,10 +7,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-//Should it be a View? Cause it's initializing the whole thing. How to deal with this which is an upper class?
-public class Album { //JFrame managed to visualize the windows elements
+public class Album {
 
-    private AlbumModel albumModel;
     private AlbumUI albumUI;
 
     PhotoComponent photoComponent;
@@ -22,7 +19,6 @@ public class Album { //JFrame managed to visualize the windows elements
      * @param title The title of the application window.
      */
     public Album(String title) {
-        albumModel = new AlbumModel();
         albumUI = new AlbumUI(this, title);
 
         try {
@@ -38,10 +34,6 @@ public class Album { //JFrame managed to visualize the windows elements
         }
 
 
-    }
-
-    public PhotoComponent getPhotoComponent() {
-        return photoComponent;
     }
 
     public void show() {

@@ -2,7 +2,6 @@ package com.ups.advIS.widgets.photoComponent;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 

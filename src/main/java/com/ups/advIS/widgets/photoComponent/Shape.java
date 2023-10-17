@@ -1,6 +1,5 @@
 package com.ups.advIS.widgets.photoComponent;
 
-import javax.sound.sampled.Line;
 import java.awt.geom.Line2D;
 import java.util.List;
 import java.awt.*;

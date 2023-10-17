@@ -1,7 +1,6 @@
 package com.ups.advIS.album;
 
 import com.ups.advIS.editToolbar.EditToolbar;
-import com.ups.advIS.widgets.photoComponent.PhotoComponent;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

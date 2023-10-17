@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 public class Shape extends Annotation{
 
-    List<Point> points = new ArrayList<>();
-    List<Line2D> lines = new ArrayList<>();
+    private List<Point> points = new ArrayList<>();
+    private List<Line2D> lines = new ArrayList<>();
 
     public Shape(Color color) {
         setColor(color);
@@ -21,6 +21,10 @@ public class Shape extends Annotation{
 
     public List<Point> getPoints() {
         return points;
+    }
+
+    public List<Line2D> getLines() {
+        return lines;
     }
 
     /**

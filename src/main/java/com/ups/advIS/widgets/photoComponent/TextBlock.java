@@ -8,6 +8,8 @@ import java.util.List;
 
 public class TextBlock extends Annotation {
 
+    //TODO Rename this in TextBox !!!!!!!!!!!!
+
     //Characters stored in the TextBlock
     List<Character> textChars = new ArrayList<>();
 

@@ -6,6 +6,7 @@ import com.ups.advIS.editToolbar.EditToolbar;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
 //The widget Controller, the main class
@@ -15,11 +16,19 @@ public class PhotoComponent extends JComponent {
     private PhotoComponentModel model;
     private PhotoComponentUI ui;
 
+    private Annotation selectedAnnotation;
+
     //Reference to the toolbar in order to communicate easier
     private EditToolbar editToolbar;
 
     //Flipped state of the component
     private boolean isFlipped = false;
+
+    //Initial movement point, used for the movement function
+    private Point initialDragPoint;
+
+    //Initial movement list of points of the related Shape, used for the movement function
+    private List<Point> initialShapePoints = new ArrayList<>();
 
     public PhotoComponent(BufferedImage image, EditToolbar editToolbar) {
 
@@ -50,11 +59,37 @@ public class PhotoComponent extends JComponent {
     }
 
     public void selectAnnotation(Annotation annotation) {
-        annotation.setIsSelected(true);
+        selectedAnnotation = annotation;
+    }
+
+    public Annotation getSelectedAnnotation() {
+        return selectedAnnotation;
     }
 
     public void showEditToolbar(boolean isVisible) {
         editToolbar.getUi().setVisible(isVisible);
+    }
+
+    public Point getInitialDragPoint() {
+        return initialDragPoint;
+    }
+
+    public void setInitialDragPoint(Point initialDragPoint) {
+        this.initialDragPoint = initialDragPoint;
+    }
+
+    public List<Point> getInitialShapePoints() {
+        return List.copyOf(this.initialShapePoints);
+    }
+
+    public void setInitialShapePoints(List<Point> points) {
+        if(this.initialShapePoints.size() != 0) {
+            this.initialShapePoints.clear();
+        }
+        for (Point point : points) {
+            this.initialShapePoints.add(new Point(point));
+        }
+
     }
 
     //Functions to manage the Model
@@ -98,12 +133,16 @@ public class PhotoComponent extends JComponent {
         model.setCurrentShape(null);
     }
 
+    public void setInitialMovementPoint(Point initialPoint) {
+
+    }
+
     /**
      * Paint function that start the paint of everything inside the component
      */
     @Override
     protected void paintComponent(Graphics pen) {
-        ui.paintPhoto(pen, isFlipped, model.getDrawingAnnotationsColor());
+        ui.paintPhoto(pen, isFlipped);
     }
 
 }

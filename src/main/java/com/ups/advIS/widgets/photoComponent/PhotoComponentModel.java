@@ -15,6 +15,7 @@ public class PhotoComponentModel {
 
     private BufferedImage image;
 
+
     private List<Shape> shapes = new ArrayList<>();
     private List<TextBlock> texts = new ArrayList<>();
     private Shape currentShape = null;
@@ -25,11 +26,14 @@ public class PhotoComponentModel {
 
     private Annotation selectedAnnotation;
 
-    private Color drawingAnnotationColor = Color.BLACK;
+    private Color drawingAnnotationColor = Color.BLACK;  //Black by default
 
     public PhotoComponentModel(BufferedImage image) {
         this.image = image;
     }
+
+
+
 
     public BufferedImage getImage() {
         return image;

@@ -20,20 +20,6 @@ public class Album {
      */
     public Album(String title) {
         albumUI = new AlbumUI(this, title);
-
-        try {
-            File file = new File("C:/Users/forna/Pictures/Screenshots/Immagine 2022-01-27 174756.png");
-            if (file.exists()) {
-                BufferedImage image = ImageIO.read(file);
-                addPhotoComponent(image);
-            } else {
-                System.err.println("Image file not found: ");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
     }
 
     public void show() {

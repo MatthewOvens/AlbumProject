@@ -7,7 +7,10 @@ import java.util.ArrayList;
 
 public class Shape extends Annotation{
 
+    //List of points stored for each shape used to draw them
     private List<Point> points = new ArrayList<>();
+
+    //List of lines inside each shape
     private List<Line2D> lines = new ArrayList<>();
 
     public Shape(Color color) {
@@ -29,18 +32,16 @@ public class Shape extends Annotation{
     /**
      * Drawing function of each shape. It basically draw a line between each point in the list and the previous one
      * if it's the first one of the list it draws just a single point
-     * @param g
      */
     public void draw(Graphics2D g, Point scalePoint) {
         if (points.size() >= 2) {
 
+            g.setColor(getColor());
+
             if(isSelected()) {
-                g.setColor(SELECTING_COLOR);
-                // Set the stroke to create thicker borders
                 g.setStroke(new BasicStroke(3));
             }
             else {
-                g.setColor(getColor());
                 g.setStroke(new BasicStroke(1));
             }
 

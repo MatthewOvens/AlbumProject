@@ -11,17 +11,17 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AlbumUI extends JFrame{
 
+    //Frame configurations
     private final int WIDTH = 800;
     private final int HEIGHT = 600;
     private final int MINIMUM_SIZE = 400;
     public final Dimension frameSize = new Dimension(WIDTH,HEIGHT);
     public final Dimension minimumFrameSize = new Dimension(MINIMUM_SIZE,MINIMUM_SIZE);
 
+    //Components under Album responsibility
     public static JLabel statusBar;
     public JMenuBar menuBar;
     public JMenu fileMenu;
@@ -30,13 +30,12 @@ public class AlbumUI extends JFrame{
     public JToggleButton peopleButton;
     public JToggleButton placesButton;
     public JToggleButton schoolButton;
-
-    public EditToolbar editToolbar;
-
     public JPanel statusPanel;
     public JPanel bodyPanel;
     public JScrollPane photoPanel;
+    public EditToolbar editToolbar; //Custom Toolbar
 
+    //Controller instance
     private Album albumController;
 
     public AlbumUI(Album controller, String title) {
@@ -101,7 +100,7 @@ public class AlbumUI extends JFrame{
         JRadioButtonMenuItem browser = new JRadioButtonMenuItem("Browser");
         view.add(browser);
 
-        /**** StackOverflow help
+        /** StackOverflow help
          * How to select one Radio button at a time
          */
         ButtonGroup group = new ButtonGroup();
@@ -261,14 +260,5 @@ public class AlbumUI extends JFrame{
         statusPanel.add(statusBar);
         this.add(statusPanel, BorderLayout.SOUTH);
     }
-
-    public List<Image> retriveStoredImages() {
-
-        //Eventually to retriveStoredImages
-
-        return new ArrayList<>();
-    }
-
-
 
 }

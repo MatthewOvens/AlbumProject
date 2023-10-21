@@ -7,12 +7,15 @@ import java.awt.event.ItemListener;
 
 public class EditToolbarUI extends JToolBar {
 
-    private Color color = Color.BLACK; //default black as a color
-
     EditToolbar controller;
+
+    private Color color = Color.BLACK; //Black as the default color
 
     //Group of buttons to manage the two "radio buttons"
     private ButtonGroup buttonsGroup = new ButtonGroup();
+    private JToggleButton selectModeButton;
+    private JToggleButton drawModeButton;
+    private JButton colorButton;
 
     public EditToolbarUI(EditToolbar controller) {
 
@@ -21,15 +24,33 @@ public class EditToolbarUI extends JToolBar {
         this.setBackground(Color.decode("#DEDAD9"));
         this.setFloatable(false);
 
-        JToggleButton selectModeButton = new JToggleButton("select"); //Add icon
-        JToggleButton drawModeButton = new JToggleButton("draw"); //Add icon
-        JButton colorButton = new JButton();
+        selectModeButton = new JToggleButton("select");
+        drawModeButton = new JToggleButton("draw");
+        colorButton = new JButton();
         colorButton.setBackground(color);
 
         buttonsGroup.add(selectModeButton);
         buttonsGroup.add(drawModeButton);
 
         buttonsGroup.setSelected(drawModeButton.getModel(), true);
+
+        setListeners();
+
+
+        this.add(Box.createHorizontalGlue());
+        this.add(selectModeButton);
+        this.addSeparator();
+        this.add(drawModeButton);
+        this.addSeparator();
+        this.add(colorButton);
+        this.addSeparator();
+
+        //Initially always hidden
+        this.setVisible(false);
+
+    }
+
+    private void setListeners() {
 
         selectModeButton.addItemListener(new ItemListener() {
             @Override
@@ -61,18 +82,6 @@ public class EditToolbarUI extends JToolBar {
             }
         });
 
-        this.add(Box.createHorizontalGlue());
-        this.add(selectModeButton);
-        this.addSeparator();
-        this.add(drawModeButton);
-        this.addSeparator();
-        this.add(colorButton);
-        this.addSeparator();
-
-        //Initially always hidden
-        this.setVisible(false);
-
     }
-
 
 }

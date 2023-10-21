@@ -19,7 +19,6 @@ public class PhotoComponentModel {
     private List<ChangeListener> changeListeners = new ArrayList<>();
 
     private String activeMode = "draw";  //Draw by deafault as the initial value
-    private Annotation selectedAnnotation;
     private Color drawingAnnotationColor = Color.BLACK;  //Black by default
 
     public PhotoComponentModel(BufferedImage image) {
@@ -67,14 +66,6 @@ public class PhotoComponentModel {
         changeListeners.add(listener);
     }
 
-    public Annotation getSelectedAnnotation() {
-        return selectedAnnotation;
-    }
-
-    public void setSelectedAnnotation(Annotation selectedAnnotation) {
-        this.selectedAnnotation = selectedAnnotation;
-    }
-
     public Color getDrawingAnnotationsColor() {
         return drawingAnnotationColor;
     }
@@ -91,6 +82,9 @@ public class PhotoComponentModel {
         this.activeMode = mode;
     }
 
+    /**
+     * Function that iterate over the changeListeners and throw them
+     */
     public void notifyChangeListeners() {
         Iterator var1 = this.changeListeners.iterator();
 

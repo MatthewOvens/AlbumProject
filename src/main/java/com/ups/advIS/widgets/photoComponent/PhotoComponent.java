@@ -8,7 +8,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-//The widget Controller, the main class
 public class PhotoComponent extends JComponent {
 
     //Model and View inizialization

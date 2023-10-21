@@ -10,10 +10,11 @@ public class TextBox extends Annotation {
     //Characters stored in the TextBox
     List<Character> textChars = new ArrayList<>();
 
-    //Coordinates of the insertion point
+    //Coordinates of the insertion point that become the starting point of the TextBox
     private int x;
     private int y;
 
+    //Width and Height of the TextBox, useful to draw the rectangle after the selecting
     private int width;
     private int height;
 
@@ -59,7 +60,6 @@ public class TextBox extends Annotation {
         if(!textChars.isEmpty()) {
             textChars.remove(textChars.size() - 1);
         }
-
     }
 
 

@@ -34,8 +34,7 @@ public class EditToolbarUI extends JToolBar {
 
         buttonsGroup.setSelected(drawModeButton.getModel(), true);
 
-        setListeners();
-
+        this.setListeners();
 
         this.add(Box.createHorizontalGlue());
         this.add(selectModeButton);
@@ -47,9 +46,11 @@ public class EditToolbarUI extends JToolBar {
 
         //Initially always hidden
         this.setVisible(false);
-
     }
 
+    /**
+     * Listeners setting for each buttons of the EditToolbar
+     */
     private void setListeners() {
 
         selectModeButton.addItemListener(new ItemListener() {

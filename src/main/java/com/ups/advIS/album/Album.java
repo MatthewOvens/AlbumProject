@@ -38,6 +38,7 @@ public class Album {
         photoComponent = new PhotoComponent(image, albumUI.editToolbar);
         albumUI.photoPanel.setViewportView(photoComponent);
         albumUI.editToolbar.setPhotoComponent(photoComponent);
+        albumUI.pack();
         show();
     }
 

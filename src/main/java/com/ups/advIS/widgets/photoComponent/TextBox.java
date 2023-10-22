@@ -84,7 +84,7 @@ public class TextBox extends Annotation {
             boolean isCapsLockOn = false;
             boolean isShiftPressed = false;
 
-            //If the last char is a delete operation, delete it and the last chart
+            //If the last char is a delete operation, delete it and the previous chart in the list
             if(textChars.get(textChars.size()-1).hashCode() == 8) {
                 deleteOperation();
             }
@@ -129,6 +129,7 @@ public class TextBox extends Annotation {
 
             }
 
+            //If the TextBox is currently selected a selecting rectangle is going to be draw around it
             if(isSelected()) {
                 Graphics2D g2d = (Graphics2D) g;
                 // Draw the rectangle that goes around the whole textBox based on the calculated width and height
@@ -136,12 +137,10 @@ public class TextBox extends Annotation {
                 // Set the stroke to create thicker borders
                 g2d.setStroke(new BasicStroke(1));
 
+                //Each value is given a slight offset in order to surround the textBox completely
                 g2d.drawRect(x + imageX - 2, y + imageY - 13, width + 7, height + 5);
             }
-
         }
-
     }
-
 
 }

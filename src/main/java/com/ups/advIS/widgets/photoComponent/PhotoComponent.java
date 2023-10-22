@@ -5,7 +5,6 @@ import com.ups.advIS.editToolbar.EditToolbar;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.List;
 
 public class PhotoComponent extends JComponent {
@@ -21,12 +20,6 @@ public class PhotoComponent extends JComponent {
 
     //Flipped state of the component
     private boolean isFlipped = false;
-
-    //Initial movement point, used for the movement function
-    private Point initialDragPoint;
-
-    //Initial movement list of points of the related Shape, used for the movement function
-    private List<Point> initialShapePoints = new ArrayList<>();
 
     public PhotoComponent(BufferedImage image, EditToolbar editToolbar) {
 
@@ -68,29 +61,8 @@ public class PhotoComponent extends JComponent {
         editToolbar.getUi().setVisible(isVisible);
     }
 
-    public Point getInitialDragPoint() {
-        return initialDragPoint;
-    }
 
-    public void setInitialDragPoint(Point initialDragPoint) {
-        this.initialDragPoint = initialDragPoint;
-    }
-
-    public List<Point> getInitialShapePoints() {
-        return List.copyOf(this.initialShapePoints);
-    }
-
-    public void setInitialShapePoints(List<Point> points) {
-        if(this.initialShapePoints.size() != 0) {
-            this.initialShapePoints.clear();
-        }
-        for (Point point : points) {
-            this.initialShapePoints.add(new Point(point));
-        }
-
-    }
-
-    //Functions to manage the Model
+    //Functions to manage the Model. Here the Controller is working in the middle for the communication between View and Model
     public BufferedImage getImage() {
         return model.getImage();
     }
@@ -130,6 +102,22 @@ public class PhotoComponent extends JComponent {
         model.addShape(currentShape);
         model.setCurrentShape(null);
     }
+    public Point getInitialDragPoint() {
+        return model.getInitialDragPoint();
+    }
+
+    public void setInitialDragPoint(Point initialDragPoint) {
+        model.setInitialDragPoint(initialDragPoint);
+    }
+
+    public List<Point> getInitialShapePoints() {
+        return model.getInitialShapePoints();
+    }
+
+    public void setInitialShapePoints(List<Point> points) {
+        model.setInitialShapePoints(points);
+    }
+
 
     /**
      * Paint function that start the paint of everything inside the component

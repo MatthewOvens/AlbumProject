@@ -57,10 +57,10 @@ public class PhotoComponentUI {
                     showEditToolbar();
                 } else {
                     // Single click
-                    if(controller.getModel().getActiveMode() == "draw") {
+                    if(controller.getModel().getActiveMode().equals("draw")) {
                         manageTextBoxDrawing(e);
                     }
-                    else if(controller.getModel().getActiveMode() == "select") {
+                    else if(controller.getModel().getActiveMode().equals("select")) {
                         manageSelecting(e);
                     }
                 }
@@ -84,7 +84,7 @@ public class PhotoComponentUI {
 
                 if(controller.isFlipped() &&
                         isBehindPhoto(e.getPoint()) &&
-                        controller.getModel().getActiveMode() == "select" &&
+                        controller.getModel().getActiveMode().equals("select") &&
                         selectedAnnotation != null) {
 
                     if(selectedAnnotation instanceof Shape) {
@@ -120,12 +120,12 @@ public class PhotoComponentUI {
 
             @Override
             public void mouseDragged(MouseEvent e) {
-                if(controller.isFlipped() && isBehindPhoto(e.getPoint())) {
+                if(controller.isFlipped()) {
 
-                    if(controller.getModel().getActiveMode() == "draw") {
+                    if(controller.getModel().getActiveMode().equals("draw")) {
                         manageShapesDrawing(e);
                     }
-                    else if(controller.getModel().getActiveMode() == "select") {
+                    else if(controller.getModel().getActiveMode().equals("select")) {
                         manageDraggingAnnotation(e);
                     }
                 }
@@ -191,8 +191,8 @@ public class PhotoComponentUI {
     private void manageSelecting(MouseEvent e) {
         if(controller.isFlipped()) {
 
-            List<TextBox> textBoxes = this.controller.getTexts();
-            List<Shape> shapes = this.controller.getShapes();
+            List<TextBox> textBoxes = controller.getTexts();
+            List<Shape> shapes = controller.getShapes();
 
             Point clickPoint = new Point(e.getPoint().x, e.getPoint().y);
 
@@ -266,6 +266,14 @@ public class PhotoComponentUI {
 
                     List<Point> initialPoints = controller.getInitialShapePoints();
 
+                    //Checking loop over the points of the shape is being moved
+                    //If also one of its points go out of the canva, the function returns without updating its points
+                    for (int i = 0; i < selectedShape.getPoints().size(); i++) {
+                        if (!isBehindPhoto(e.getPoint())) {
+                            return;
+                        }
+                    }
+
                     // Update the Shapes' position based on the mouse movement
                     for (int i = 0; i < selectedShape.getPoints().size(); i++) {
                         Point newPoint = new Point(initialPoints.get(i).x + xOffset, initialPoints.get(i).y + yOffset);
@@ -288,8 +296,10 @@ public class PhotoComponentUI {
                     int yOffset = e.getY() - controller.getInitialDragPoint().y;
 
                     // Update the TextBox's position based on the mouse movement
-                    selectedTextBox.setX(controller.getInitialDragPoint().x + xOffset - imageX);
-                    selectedTextBox.setY(controller.getInitialDragPoint().y + yOffset - imageY);
+                    if (isBehindPhoto(e.getPoint())) {
+                        selectedTextBox.setX(controller.getInitialDragPoint().x + xOffset - imageX);
+                        selectedTextBox.setY(controller.getInitialDragPoint().y + yOffset - imageY);
+                    }
 
                     // Repaint the canvas or component to reflect the new TextBox position
                     controller.getModel().notifyChangeListeners();
@@ -387,10 +397,10 @@ public class PhotoComponentUI {
     public void showEditToolbar() {
 
         if(controller.isFlipped()) {
-            this.controller.showEditToolbar(true);
+            controller.showEditToolbar(true);
         }
         else {
-            this.controller.showEditToolbar(false);
+            controller.showEditToolbar(false);
         }
 
     }
@@ -400,9 +410,9 @@ public class PhotoComponentUI {
 
         paintBackground(g);
 
-        int parentComponentWidth = this.controller.getWidth();
-        int parentComponentHeight = this.controller.getHeight();
-        BufferedImage image = this.controller.getImage();
+        int parentComponentWidth = controller.getWidth();
+        int parentComponentHeight = controller.getHeight();
+        BufferedImage image = controller.getImage();
 
         // Calculate the position to center the image within the component
         imageX = (parentComponentWidth - image.getWidth()) / 2;
@@ -429,8 +439,8 @@ public class PhotoComponentUI {
         // Set the background color
         g2d.setColor(Color.WHITE);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.fillRect(0, 0, this.controller.getWidth(), this.controller.getHeight());
-        g2d.drawRect(0, 0, this.controller.getWidth(), this.controller.getHeight());
+        g2d.fillRect(0, 0, controller.getWidth(), controller.getHeight());
+        g2d.drawRect(0, 0, controller.getWidth(), controller.getHeight());
 
         // Set the drawing color and stroke
         g2d.setColor(Color.LIGHT_GRAY);
@@ -438,8 +448,8 @@ public class PhotoComponentUI {
 
         //Rendering of the background drawings
         //Code found online to draw a particular pattern
-        for (int x = 0; x < this.controller.getWidth(); x += 40) {
-            for (int y = 0; y < this.controller.getHeight(); y += 40) {
+        for (int x = 0; x < controller.getWidth(); x += 40) {
+            for (int y = 0; y < controller.getHeight(); y += 40) {
                 // Draw circles at even positions
                 if ((x / 40 + y / 40) % 2 == 0) {
                     g2d.fillOval(x, y, 20, 20);
@@ -457,8 +467,8 @@ public class PhotoComponentUI {
      */
     public void paintDrawnAnnotations(Graphics g) {
 
-        List<Shape> shapes = this.controller.getShapes();
-        Shape currentShape = this.controller.getCurrentShape();
+        List<Shape> shapes = controller.getShapes();
+        Shape currentShape = controller.getCurrentShape();
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -482,17 +492,17 @@ public class PhotoComponentUI {
      */
     public void paintTextAnnotations(Graphics g) {
 
-        List<TextBox> textBoxes = this.controller.getTexts();
-        TextBox currentTextBox = this.controller.getCurrentTextBox();
+        List<TextBox> textBoxes = controller.getTexts();
+        TextBox currentTextBox = controller.getCurrentTextBox();
 
         // Draw all stored textBoxes
         for (TextBox text : textBoxes) {
-            text.draw(g, this.controller, imageX, imageY);
+            text.draw(g, controller, imageX, imageY);
         }
 
         // Draw the current textbox (if any)
         if (currentTextBox != null) {
-            currentTextBox.draw(g, this.controller, imageX, imageY);
+            currentTextBox.draw(g, controller, imageX, imageY);
         }
 
     }

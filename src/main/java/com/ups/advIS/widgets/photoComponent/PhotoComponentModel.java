@@ -18,6 +18,11 @@ public class PhotoComponentModel {
     private TextBox currentTextBox = null;
     private List<ChangeListener> changeListeners = new ArrayList<>();
 
+    //Initial movement point, used for the movement function
+    private Point initialDragPoint;
+    //Initial movement list of points of the related Shape, used for the movement function
+    private List<Point> initialShapePoints = new ArrayList<>();
+
     private String activeMode = "draw";  //Draw by deafault as the initial value
     private Color drawingAnnotationColor = Color.BLACK;  //Black by default
 
@@ -80,6 +85,34 @@ public class PhotoComponentModel {
 
     public void setActiveMode(String mode) {
         this.activeMode = mode;
+    }
+
+    public Point getInitialDragPoint() {
+        return initialDragPoint;
+    }
+
+    /**
+     * Function that sets the initial point of the TextBox before the movement. Used for the movement function
+     */
+    public void setInitialDragPoint(Point initialDragPoint) {
+        this.initialDragPoint = initialDragPoint;
+    }
+
+    public List<Point> getInitialShapePoints() {
+        return List.copyOf(this.initialShapePoints);
+    }
+
+    /**
+     * Function that sets the initial Shape before the movement. List of points of the related Shape, used for the movement function
+     */
+    public void setInitialShapePoints(List<Point> points) {
+        if(this.initialShapePoints.size() != 0) {
+            this.initialShapePoints.clear();
+        }
+        for (Point point : points) {
+            this.initialShapePoints.add(new Point(point));
+        }
+
     }
 
     /**
